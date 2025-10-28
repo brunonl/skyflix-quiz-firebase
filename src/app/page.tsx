@@ -167,7 +167,7 @@ export default function Home() {
               <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
               <Carousel 
                 opts={{ loop: true, align: "start" }}
-                plugins={[ Autoplay({ delay: 2000, stopOnInteraction: false })]}
+                plugins={[ Autoplay({ delay: 2000, stopOnInteraction: true })]}
                 className="w-full"
               >
                   <CarouselContent className="-ml-2">
@@ -180,7 +180,7 @@ export default function Home() {
               </Carousel>
             </div>
             <p className="mb-2 font-semibold">Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <Button size="lg" className="w-full md:w-auto bg-secondary text-secondary-foreground hover:bg-secondary/90" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
@@ -353,3 +353,5 @@ export default function Home() {
     </>
   );
 }
+
+    
