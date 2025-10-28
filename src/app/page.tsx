@@ -12,8 +12,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import { cn } from "@/lib/utils";
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
@@ -27,6 +25,12 @@ const quizQuestions = [
 ];
 
 const sliderImages = [
+  "https://skyflix-quiz.vercel.app/images/historys/h1.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h2.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h3.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h4.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h5.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h6.png",
   "https://skyflix-quiz.vercel.app/images/historys/h1.png",
   "https://skyflix-quiz.vercel.app/images/historys/h2.png",
   "https://skyflix-quiz.vercel.app/images/historys/h3.png",
@@ -171,25 +175,19 @@ export default function Home() {
             <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
-            <div className="w-full overflow-hidden relative mb-8">
+            <div className="w-full overflow-hidden relative mb-8 group">
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
               <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
-              <Carousel 
-                opts={{ loop: true, align: "start" }}
-                plugins={[ Autoplay({ delay: 2000, stopOnInteraction: true })]}
-                className="w-full"
-              >
-                  <CarouselContent className="-ml-2">
-                      {[...sliderImages, ...sliderImages].map((src, i) => (
-                          <CarouselItem key={i} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 pl-2">
-                               <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-auto object-cover" />
-                          </CarouselItem>
-                      ))}
-                  </CarouselContent>
-              </Carousel>
+              <div className="flex w-max scrolling-wrapper group-hover:[animation-play-state:paused]">
+                {sliderImages.map((src, i) => (
+                  <div key={i} className="w-[200px] h-[300px] flex-shrink-0 px-2">
+                    <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
             </div>
-            <p className="mb-2 font-semibold text-accent">Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <p className="mb-2 font-semibold text-white">Quero proteger o meu filho agora!</p>
+            <Button size="lg" className="w-full md:w-auto" variant="secondary" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
@@ -205,7 +203,7 @@ export default function Home() {
                   variant="outline"
                   size="lg" 
                   className={cn(
-                    "justify-start text-left h-auto py-4 text-base w-full border-primary/40 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground",
+                    "justify-start text-left h-auto py-4 text-base w-full bg-transparent border-primary/40 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground",
                     selectedAnswer === answer && "bg-primary/20 text-foreground border-primary" 
                   )} 
                   onClick={() => handleAnswer(answer)}
@@ -371,5 +369,3 @@ export default function Home() {
     </>
   );
 }
-
-    
