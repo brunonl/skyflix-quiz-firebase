@@ -103,6 +103,6 @@
     width: 100%;
     height: 200vh; /* Double height for seamless loop */
     z-index: -10;
-    animation: move-up 150s linear infinite;
+    animation: move-up 100s linear infinite;
   }
 }
