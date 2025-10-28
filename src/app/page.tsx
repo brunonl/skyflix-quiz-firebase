@@ -175,10 +175,10 @@ export default function Home() {
             <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
-            <div className="w-full overflow-hidden relative mb-8 group">
+            <div className="w-full overflow-hidden relative mb-8">
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
               <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
-              <div className="flex w-max scrolling-wrapper group-hover:[animation-play-state:paused]">
+              <div className="flex w-max scrolling-wrapper">
                 {sliderImages.map((src, i) => (
                   <div key={i} className="w-[200px] h-[300px] flex-shrink-0 px-2">
                     <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-full object-cover" />
