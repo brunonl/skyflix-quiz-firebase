@@ -1,22 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 const StarsBackground = () => {
-  const [stars, setStars] = useState<{ top: string; left: string; size: number; delay: number; }[]>([]);
-
-  useEffect(() => {
-    const generateStars = () => {
-      const newStars = Array.from({ length: 100 }).map(() => ({
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        size: Math.random() * 2 + 1,
-        delay: Math.random() * 5,
-      }));
-      setStars(newStars);
-    };
-
-    generateStars();
+  const stars = useMemo(() => {
+    return Array.from({ length: 150 }).map(() => ({
+      top: `${Math.random() * 100}vh`,
+      left: `${Math.random() * 100}vw`,
+      size: Math.random() * 2 + 1,
+      delay: Math.random() * 5,
+      duration: Math.random() * 5 + 3,
+    }));
   }, []);
 
   // Return null on the server to avoid hydration mismatch
@@ -25,7 +19,7 @@ const StarsBackground = () => {
   }
 
   return (
-    <>
+    <div className="relative w-full h-full">
       {stars.map((star, i) => (
         <div
           key={i}
@@ -36,11 +30,12 @@ const StarsBackground = () => {
             width: `${star.size}px`,
             height: `${star.size}px`,
             animationDelay: `${star.delay}s`,
-            animationDuration: `${star.delay + 3}s`,
+            animationDuration: `${star.duration}s`,
+            position: 'absolute', // Change from fixed to absolute
           }}
         />
       ))}
-    </>
+    </div>
   );
 };
 

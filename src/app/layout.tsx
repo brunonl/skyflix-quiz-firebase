@@ -39,7 +39,13 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
-        <StarsBackground />
+        <div className="fixed inset-0 overflow-hidden z-[-1]">
+          <div className="moving-stars-container">
+            <StarsBackground />
+            <StarsBackground />
+          </div>
+        </div>
+        <div className="fixed top-0 left-0 right-0 h-48 bg-gradient-to-b from-background to-transparent z-0" />
         {children}
         <Toaster />
         <audio id="background-music" src="/music/background.mp3" loop></audio>
