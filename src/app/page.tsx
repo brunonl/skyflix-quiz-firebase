@@ -142,16 +142,16 @@ export default function Home() {
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto">
               O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
             </h1>
-            <p className="text-lg md:text-xl text-primary/90 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-primary/90 mb-8 max-w-2xl mx-auto" style={{ color: '#e02828' }}>
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
-            <div className="w-screen overflow-hidden relative h-56 mb-8 -mx-4 sm:-mx-8">
+            <div className="w-screen overflow-hidden relative h-64 mb-8">
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
               <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
               <div className="flex animate-scroll">
                   {[...sliderImages, ...sliderImages].map((src, i) => (
-                      <div key={i} className="flex-shrink-0 w-40 sm:w-48 md:w-52 mx-2">
-                           <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={150} height={225} className="rounded-lg shadow-lg w-full h-auto" />
+                      <div key={i} className="flex-shrink-0 w-40 sm:w-44 md:w-48 mx-2">
+                           <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={150} height={225} className="rounded-lg shadow-lg w-full h-auto object-cover" />
                       </div>
                   ))}
               </div>
@@ -277,8 +277,8 @@ export default function Home() {
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-4 px-4 sm:px-8">
             <header className="w-full flex flex-col items-center gap-4">
-                <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={150} height={38} priority className="mb-4"/>
-                <Progress value={progress} className="w-full h-2" />
+                <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={140} height={35} priority className="mb-4"/>
+                <Progress value={progress} className="w-full h-2 max-w-md" />
             </header>
             
             <div className="w-full flex-grow flex flex-col items-center justify-center">
@@ -319,7 +319,7 @@ export default function Home() {
         }
         .animate-scroll {
           display: flex;
-          width: calc(200% + 48px); /* sliderImages.length * 2 * (w + mx*2) */
+          width: calc(200% + 96px); /* sliderImages.length * 2 * (w + mx*2) */
           animation: scroll 30s linear infinite;
         }
       `}</style>
@@ -327,3 +327,4 @@ export default function Home() {
   );
 }
 
+    
