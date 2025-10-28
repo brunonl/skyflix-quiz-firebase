@@ -188,8 +188,8 @@ export default function Home() {
                   </CarouselContent>
               </Carousel>
             </div>
-            <p className="mb-2 font-semibold">Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <p className="mb-2 font-semibold text-accent">Quero proteger o meu filho agora!</p>
+            <Button size="lg" className="w-full md:w-auto" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
