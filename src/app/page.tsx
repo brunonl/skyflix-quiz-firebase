@@ -314,7 +314,7 @@ export default function Home() {
             <header className="w-full flex flex-col items-center gap-4 mb-8">
                 <div className="relative w-full flex items-center justify-center">
                    {showBackButton && (
-                    <Button variant="ghost" size="icon" onClick={handleBack} className="absolute left-0 hover:bg-primary/20">
+                    <Button variant="ghost" size="icon" onClick={handleBack} className="absolute left-0 bg-primary/10 hover:bg-primary/20">
                       <ChevronLeft className="h-6 w-6" />
                     </Button>
                   )}
