@@ -12,6 +12,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
 type FormValues = { name: string; email: string; phone: string; };
@@ -142,19 +144,25 @@ export default function Home() {
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto">
               O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
             </h1>
-            <p className="text-lg md:text-xl text-primary/90 mb-8 max-w-2xl mx-auto" style={{ color: '#e02828' }}>
+            <p className="text-lg md:text-xl text-foreground/90 mb-8 max-w-2xl mx-auto">
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
-            <div className="w-screen overflow-hidden relative h-64 mb-8">
+            <div className="w-full overflow-hidden relative mb-8">
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
               <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
-              <div className="flex animate-scroll">
-                  {[...sliderImages, ...sliderImages].map((src, i) => (
-                      <div key={i} className="flex-shrink-0 w-40 sm:w-44 md:w-48 mx-2">
-                           <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={150} height={225} className="rounded-lg shadow-lg w-full h-auto object-cover" />
-                      </div>
-                  ))}
-              </div>
+              <Carousel 
+                opts={{ loop: true, align: "start" }}
+                plugins={[ Autoplay({ delay: 2000, stopOnInteraction: false })]}
+                className="w-full"
+              >
+                  <CarouselContent className="-ml-2">
+                      {[...sliderImages, ...sliderImages].map((src, i) => (
+                          <CarouselItem key={i} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 pl-2">
+                               <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="rounded-lg shadow-lg w-full h-auto object-cover" />
+                          </CarouselItem>
+                      ))}
+                  </CarouselContent>
+              </Carousel>
             </div>
             <p className="mb-2 font-semibold">Quero proteger o meu filho agora!</p>
             <Button size="lg" className="w-full md:w-auto bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
@@ -276,8 +284,8 @@ export default function Home() {
         </div>
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-4 px-4 sm:px-8">
-            <header className="w-full flex flex-col items-center gap-4">
-                <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={140} height={35} priority className="mb-4"/>
+            <header className="w-full flex flex-col items-center gap-4 mb-8">
+                <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-4"/>
                 <Progress value={progress} className="w-full h-2 max-w-md" />
             </header>
             
@@ -312,19 +320,6 @@ export default function Home() {
           </form>
         </DialogContent>
       </Dialog>
-      <style jsx global>{`
-        @keyframes scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .animate-scroll {
-          display: flex;
-          width: calc(200% + 96px); /* sliderImages.length * 2 * (w + mx*2) */
-          animation: scroll 30s linear infinite;
-        }
-      `}</style>
     </>
   );
 }
-
-    
