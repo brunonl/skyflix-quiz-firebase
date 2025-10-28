@@ -159,7 +159,7 @@ export default function Home() {
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto">
               O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
             </h1>
-            <p className="text-lg md:text-xl text-foreground/90 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-yellow-300 mb-8 max-w-2xl mx-auto">
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
             <div className="w-full overflow-hidden relative mb-8">
@@ -191,7 +191,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
             <div className="flex flex-col gap-4 mt-8">
               {question.answers.map((answer, i) => (
-                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full" onClick={() => handleAnswer(answer)}>
+                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full hover:bg-primary/20" onClick={() => handleAnswer(answer)}>
                   {answer}
                 </Button>
               ))}
@@ -347,5 +347,7 @@ export default function Home() {
     </>
   );
 }
+
+    
 
     
