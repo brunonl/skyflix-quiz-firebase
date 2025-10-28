@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { cn } from "@/lib/utils";
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
 type FormValues = { name: string; email: string; phone: string; };
@@ -37,6 +38,7 @@ const sliderImages = [
 export default function Home() {
   const [stage, setStage] = useState<Stage>('intro');
   const [questionIndex, setQuestionIndex] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -98,6 +100,10 @@ export default function Home() {
       return () => clearTimeout(timer);
     }
   }, [stage]);
+  
+  useEffect(() => {
+    setSelectedAnswer(null);
+  }, [questionIndex, stage]);
 
   const handleStartQuiz = () => {
     trackEvent('start_quiz');
@@ -105,16 +111,19 @@ export default function Home() {
   };
 
   const handleAnswer = (answer: string) => {
+    setSelectedAnswer(answer);
     trackEvent('answer_question', {
       question_id: `question_${questionIndex + 1}`,
       question_text: quizQuestions[questionIndex].text,
       answer: answer,
     });
-    if (questionIndex < quizQuestions.length - 1) {
-      setQuestionIndex(prev => prev + 1);
-    } else {
-      setStage('reveal');
-    }
+    setTimeout(() => {
+      if (questionIndex < quizQuestions.length - 1) {
+        setQuestionIndex(prev => prev + 1);
+      } else {
+        setStage('reveal');
+      }
+    }, 300);
   };
 
   const handleBack = () => {
@@ -159,7 +168,7 @@ export default function Home() {
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-white">
               O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
             </h1>
-            <p className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
             <div className="w-full overflow-hidden relative mb-8">
@@ -191,7 +200,17 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
             <div className="flex flex-col gap-4 mt-8">
               {question.answers.map((answer, i) => (
-                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full border-primary/50 hover:border-primary opacity-80 hover:opacity-100" onClick={() => handleAnswer(answer)}>
+                <Button 
+                  key={i} 
+                  variant={selectedAnswer === answer ? "default" : "outline"} 
+                  size="lg" 
+                  className={cn(
+                    "justify-start text-left h-auto py-4 text-base w-full",
+                    selectedAnswer === null ? "border-primary/30 hover:border-primary hover:bg-primary/10" :
+                    selectedAnswer === answer ? "bg-primary text-primary-foreground" : "border-border/20 text-foreground/70"
+                  )} 
+                  onClick={() => handleAnswer(answer)}
+                >
                   {answer}
                 </Button>
               ))}
@@ -353,7 +372,3 @@ export default function Home() {
     </>
   );
 }
-
-    
-
-    
