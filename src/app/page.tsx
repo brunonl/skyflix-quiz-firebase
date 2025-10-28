@@ -268,7 +268,7 @@ export default function Home() {
         </div>
 
         <header className="w-full max-w-4xl flex flex-col items-center mb-8">
-            <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={180} height={45} priority className="mb-6"/>
+            <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={270} height={68} priority className="mb-6"/>
             <Progress value={progress} className="w-full h-2" />
         </header>
         
