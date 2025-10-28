@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { trackEvent } from "@/lib/tracking";
-import { Loader2, Volume2, VolumeX, Play, Check, Lock, ChevronLeft } from "lucide-react";
+import { Loader2, Volume2, VolumeX, Play, Check, Lock, ChevronLeft, PartyPopper } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -191,7 +191,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
             <div className="flex flex-col gap-4 mt-8">
               {question.answers.map((answer, i) => (
-                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full hover:bg-primary/20" onClick={() => handleAnswer(answer)}>
+                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full hover:bg-primary/20 border-primary/50 hover:border-primary" onClick={() => handleAnswer(answer)}>
                   {answer}
                 </Button>
               ))}
@@ -320,34 +320,38 @@ export default function Home() {
       </main>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Só mais um passo para proteger seu filho!</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleSubmit(onModalSubmit)} className="space-y-4">
-            <div>
-              <Label htmlFor="name">Nome</Label>
-              <Input id="name" {...register("name", { required: "Nome é obrigatório" })} placeholder="Seu nome completo"/>
-              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-            </div>
-            <div>
-              <Label htmlFor="email">E-mail</Label>
-              <Input id="email" type="email" {...register("email", { required: "E-mail é obrigatório", pattern: { value: /^\S+@\S+$/i, message: "E-mail inválido" } })} placeholder="seu-melhor@email.com" />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-            </div>
-             <div>
-              <Label htmlFor="phone">Telefone</Label>
-              <Input id="phone" type="tel" {...register("phone", { required: "Telefone é obrigatório" })} placeholder="(XX) XXXXX-XXXX" />
-              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
-            </div>
-            <Button type="submit" className="w-full bg-green-500 hover:bg-green-600">Quero meu acesso</Button>
-          </form>
+        <DialogContent className="p-0 border-primary shadow-[0_0_30px_5px] shadow-primary/30 max-w-sm">
+          <div className="p-8 text-center space-y-4">
+            <DialogHeader className="space-y-2">
+              <DialogTitle className="text-2xl font-bold flex items-center justify-center gap-2">
+                <PartyPopper className="text-primary h-6 w-6" />
+                Último passo para garantir seu desconto!
+              </DialogTitle>
+              <p className="text-muted-foreground">Preencha os dados abaixo para acessar a plataforma:</p>
+            </DialogHeader>
+            <form onSubmit={handleSubmit(onModalSubmit)} className="space-y-4 text-left">
+              <div>
+                <Input id="name" {...register("name", { required: "Nome é obrigatório" })} placeholder="Seu nome completo"/>
+                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+              </div>
+              <div>
+                <Input id="email" type="email" {...register("email", { required: "E-mail é obrigatório", pattern: { value: /^\S+@\S+$/i, message: "E-mail inválido" } })} placeholder="Seu melhor e-mail" />
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              </div>
+               <div>
+                <Input id="phone" type="tel" {...register("phone", { required: "Telefone é obrigatório" })} placeholder="Seu WhatsApp (com DDD)" />
+                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
+              </div>
+              <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white rounded-full text-lg h-12">Quero meu acesso com 50% OFF</Button>
+            </form>
+            <p className="text-sm text-muted-foreground flex items-center justify-center gap-2 pt-2">
+              <Lock className="h-4 w-4"/> Seus dados estão seguros conosco
+            </p>
+          </div>
         </DialogContent>
       </Dialog>
     </>
   );
 }
-
-    
 
     
