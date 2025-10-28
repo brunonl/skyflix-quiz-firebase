@@ -202,12 +202,13 @@ export default function Home() {
               {question.answers.map((answer, i) => (
                 <Button 
                   key={i} 
-                  variant={selectedAnswer === answer ? "default" : "outline"} 
+                  variant="outline"
                   size="lg" 
                   className={cn(
                     "justify-start text-left h-auto py-4 text-base w-full",
-                    selectedAnswer === null ? "border-primary/30 hover:border-primary hover:bg-primary/10" :
-                    selectedAnswer === answer ? "bg-primary text-primary-foreground" : "border-border/20 text-foreground/70"
+                    selectedAnswer === answer 
+                      ? "bg-primary text-primary-foreground border-primary" 
+                      : "border-primary/40 text-foreground/80 hover:bg-primary/10 hover:border-primary"
                   )} 
                   onClick={() => handleAnswer(answer)}
                 >
@@ -372,3 +373,5 @@ export default function Home() {
     </>
   );
 }
+
+    
