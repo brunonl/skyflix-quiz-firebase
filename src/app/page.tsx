@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { trackEvent } from "@/lib/tracking";
-import { Loader2, Volume2, VolumeX, Play, Check, Lock } from "lucide-react";
+import { Loader2, Volume2, VolumeX, Play, Check, Lock, ChevronLeft } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -113,6 +113,21 @@ export default function Home() {
     if (questionIndex < quizQuestions.length - 1) {
       setQuestionIndex(prev => prev + 1);
     } else {
+      setStage('reveal');
+    }
+  };
+
+  const handleBack = () => {
+    if (stage === 'quiz') {
+      if (questionIndex > 0) {
+        setQuestionIndex(prev => prev - 1);
+      } else {
+        setStage('intro');
+      }
+    } else if (stage === 'reveal') {
+      setStage('quiz');
+      setQuestionIndex(quizQuestions.length - 1);
+    } else if (stage === 'social') {
       setStage('reveal');
     }
   };
@@ -274,6 +289,8 @@ export default function Home() {
     }
   };
 
+  const showBackButton = stage === 'quiz' || stage === 'reveal' || stage === 'social';
+
   return (
     <>
       <main className="flex min-h-screen w-full flex-col items-center pt-6 sm:pt-10 relative overflow-x-hidden">
@@ -285,7 +302,14 @@ export default function Home() {
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-4 px-4 sm:px-8">
             <header className="w-full flex flex-col items-center gap-4 mb-8">
-                <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-4"/>
+                <div className="relative w-full flex items-center justify-center">
+                   {showBackButton && (
+                    <Button variant="ghost" size="icon" onClick={handleBack} className="absolute left-0">
+                      <ChevronLeft className="h-6 w-6" />
+                    </Button>
+                  )}
+                  <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-4"/>
+                </div>
                 <Progress value={progress} className="w-full h-2 max-w-md" />
             </header>
             
@@ -323,3 +347,5 @@ export default function Home() {
     </>
   );
 }
+
+    
