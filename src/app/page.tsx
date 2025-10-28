@@ -31,12 +31,6 @@ const sliderImages = [
   "https://skyflix-quiz.vercel.app/images/historys/h4.png",
   "https://skyflix-quiz.vercel.app/images/historys/h5.png",
   "https://skyflix-quiz.vercel.app/images/historys/h6.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h1.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h2.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h3.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h4.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h5.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h6.png",
 ];
 
 export default function Home() {
@@ -179,7 +173,7 @@ export default function Home() {
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
               <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
               <div className="flex w-max scrolling-wrapper">
-                {sliderImages.map((src, i) => (
+                {[...sliderImages, ...sliderImages].map((src, i) => (
                   <div key={i} className="w-[200px] h-[300px] flex-shrink-0 px-2">
                     <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-full object-cover" />
                   </div>
@@ -187,7 +181,7 @@ export default function Home() {
               </div>
             </div>
             <p className="mb-2 font-semibold text-white">Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto" variant="secondary" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <Button size="lg" className="w-full md:w-auto" variant="primary" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
