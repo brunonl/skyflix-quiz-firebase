@@ -1,76 +1,93 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
-import { quizQuestions, type QuizQuestion } from "@/lib/quiz-data";
 import { trackEvent } from "@/lib/tracking";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Loader2, ShieldCheck, HeartHandshake, Sparkles, PlayCircle, Ticket } from "lucide-react";
-import { SkyflixLogo } from "@/components/skyflix-logo";
+import { Loader2, Volume2, VolumeX, Play, Check, Lock } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useForm, SubmitHandler } from "react-hook-form";
 
-type Stage = 'intro' | 'quiz' | 'solution' | 'loading' | 'offer';
+type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
+type FormValues = { name: string; email: string; phone: string; };
 
-const benefits = [
-  {
-    icon: <ShieldCheck className="h-8 w-8 text-primary" />,
-    title: "Safe Content",
-    description: "100% Christian and family-friendly shows, vetted for your peace of mind.",
-  },
-  {
-    icon: <HeartHandshake className="h-8 w-8 text-primary" />,
-    title: "Family Values",
-    description: "Entertainment that reinforces the values you teach at home.",
-  },
-  {
-    icon: <Sparkles className="h-8 w-8 text-primary" />,
-    title: "Inspiring Stories",
-    description: "Content that nurtures faith, inspires character, and sparks curiosity.",
-  },
+const quizQuestions = [
+  { id: 1, text: "Você acredita que o conteúdo que seu filho consome hoje pode influenciar o comportamento dele no futuro?", answers: ["A. Com certeza, e isso me preocupa.", "B. Sim, mas é difícil controlar tudo.", "C. Talvez, nunca pensei nisso.", "D. Não tenho certeza."] },
+  { id: 2, text: "Você já sentiu medo de deixar seu filho sozinho com o celular ou YouTube?", answers: ["A. Sim, o tempo todo.", "B. Sim, mas tento monitorar.", "C. Às vezes, depende do conteúdo."] },
+  { id: 3, text: "E se você pudesse oferecer um ambiente 100% seguro, com desenhos e histórias que ensinam valores cristãos, você usaria?", answers: ["A. Sim, com certeza!", "B. Sim, se fosse fácil de usar.", "C. Talvez, depende do conteúdo."] },
+  { id: 4, text: "Qual dessas opções mais representa o que você quer pro seu filho?", answers: ["A. Um ambiente seguro e sem influências ruins.", "B. Um conteúdo que ensine valores cristãos de forma divertida.", "C. Algo que estimule a criatividade e a fé ao mesmo tempo.", "D. Todas as opções acima."] },
 ];
 
-const testimonials = PlaceHolderImages.filter(img => img.id.includes('testimonial'));
-
-const LoadingMessage = () => {
-  const messages = [
-    "Analyzing your concerns...",
-    "Calculating the best plan for your family...",
-    "Your special offer is almost ready!",
-  ];
-  const [currentMessage, setCurrentMessage] = useState(messages[0]);
-
-  useEffect(() => {
-    let messageIndex = 0;
-    const interval = setInterval(() => {
-      messageIndex = (messageIndex + 1) % messages.length;
-      setCurrentMessage(messages[messageIndex]);
-    }, 1500);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return <p className="mt-4 text-lg text-center text-foreground/80">{currentMessage}</p>;
-};
+const sliderImages = [
+  "https://skyflix-quiz.vercel.app/images/historys/h1.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h2.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h3.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h4.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h5.png",
+  "https://skyflix-quiz.vercel.app/images/historys/h6.png",
+];
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>('intro');
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
-  const totalQuestions = quizQuestions.length;
+  const [progress, setProgress] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+
+  const playAudio = useCallback(() => {
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play().catch(() => {
+        // Autoplay was prevented. User needs to interact first.
+      });
+    }
+  }, []);
+  
+  useEffect(() => {
+    audioRef.current = document.getElementById("background-music") as HTMLAudioElement;
+    // Autoplay with sound is often blocked. We'll attempt to play it, 
+    // and rely on a user click if it fails.
+    playAudio();
+    document.addEventListener('click', playAudio, { once: true });
+    
+    return () => {
+      document.removeEventListener('click', playAudio);
+    };
+  }, [playAudio]);
 
   useEffect(() => {
-    if (stage === 'quiz') {
-      trackEvent('step_view', { step_id: `question_${questionIndex + 1}` });
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
     }
+  }, [isMuted]);
+
+  useEffect(() => {
+    const totalSteps = quizQuestions.length + 4; // intro, quizzes, reveal, social, loading, offer
+    let currentStep = 0;
+    if(stage === 'intro') currentStep = 0;
+    if(stage === 'quiz') currentStep = questionIndex + 1;
+    if(stage === 'reveal') currentStep = quizQuestions.length + 1;
+    if(stage === 'social') currentStep = quizQuestions.length + 2;
+    if(stage === 'loading') currentStep = quizQuestions.length + 3;
+    if(stage === 'offer') currentStep = quizQuestions.length + 4;
+    
+    const newProgress = (currentStep / totalSteps) * 100;
+    setProgress(newProgress);
+
+    trackEvent('step_view', { step_id: stage, step_number: currentStep, progress: newProgress });
   }, [stage, questionIndex]);
-  
+
   useEffect(() => {
     if (stage === 'loading') {
       const timer = setTimeout(() => {
         setStage('offer');
-      }, 4500);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [stage]);
@@ -83,34 +100,56 @@ export default function Home() {
   const handleAnswer = (answer: string) => {
     trackEvent('answer_question', {
       question_id: `question_${questionIndex + 1}`,
-      question_text: quizQuestions[questionIndex].question,
+      question_text: quizQuestions[questionIndex].text,
       answer: answer,
     });
-    setAnswers(prev => [...prev, answer]);
-    if (questionIndex < totalQuestions - 1) {
+    if (questionIndex < quizQuestions.length - 1) {
       setQuestionIndex(prev => prev + 1);
     } else {
-      trackEvent('reveal_solution');
-      setStage('solution');
+      setStage('reveal');
     }
   };
-  
-  const handleCheckoutRedirect = () => {
+
+  const onModalSubmit: SubmitHandler<FormValues> = (data) => {
+    trackEvent('open_modal', {
+      user_name: data.name,
+      user_email: data.email,
+      user_phone: data.phone,
+    });
     trackEvent('checkout_redirect');
-    window.location.href = "https://kiwify.com.br"; // Placeholder URL
-  }
+    window.location.href = "https://pay.kiwify.com.br/0nFE1EN";
+  };
+
+  const toggleMute = () => {
+    setIsMuted(prev => {
+        if(audioRef.current) {
+            audioRef.current.muted = !prev;
+        }
+        return !prev;
+    });
+};
 
   const renderContent = () => {
     switch (stage) {
       case 'intro':
         return (
           <div className="text-center animate-in fade-in duration-500">
-            <SkyflixLogo className="h-16 mb-8" />
-            <h1 className="text-4xl font-bold tracking-tight mb-4">Is your family's screen time safe and sound?</h1>
-            <p className="text-lg text-foreground/80 mb-8 max-w-2xl mx-auto">
-              Find out if your children are truly protected. Take our 3-question quiz to diagnose your family's emotional needs.
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-2xl mx-auto">O que seu filho está assistindo hoje... pode moldar quem ele será amanhã.</h1>
+            <p className="text-base md:text-lg text-foreground/80 mb-8 max-w-2xl mx-auto">
+              Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
-            <Button size="lg" onClick={handleStartQuiz}>Start The Quiz</Button>
+            <div className="w-full overflow-hidden relative h-48 mb-8">
+                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-10"></div>
+                <div className="flex animate-scroll">
+                    {[...sliderImages, ...sliderImages].map((src, i) => (
+                        <div key={i} className="flex-shrink-0 w-1/3 sm:w-1/4 md:w-1/6 mx-2">
+                             <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={150} height={225} className="rounded-lg shadow-lg" />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <Button size="lg" className="bg-black text-white hover:bg-black/80 w-full md:w-auto" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <p className="mt-2 font-semibold">Quero proteger o meu filho agora!</p>
           </div>
         );
 
@@ -118,110 +157,162 @@ export default function Home() {
         const question = quizQuestions[questionIndex];
         return (
           <div className="w-full animate-in fade-in duration-500">
-            <Progress value={((questionIndex + 1) / totalQuestions) * 100} className="w-full mb-8" />
-            <h2 className="text-3xl font-semibold text-center mb-4">{question.question}</h2>
-            {question.subtext && <p className="text-center text-muted-foreground mb-8">{question.subtext}</p>}
+            <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
             <div className="flex flex-col gap-4 mt-8">
               {question.answers.map((answer, i) => (
-                <Button key={i} variant="outline" size="lg" className="justify-start py-6 text-base" onClick={() => handleAnswer(answer)}>
+                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full" onClick={() => handleAnswer(answer)}>
                   {answer}
                 </Button>
               ))}
             </div>
           </div>
         );
-
-      case 'solution':
+      
+      case 'reveal':
         return (
-          <div className="w-full text-center space-y-16 animate-in fade-in duration-1000">
-            <div className="space-y-4">
-              <h2 className="text-3xl md:text-4xl font-bold text-accent">Your Concern Is Valid. The Digital World Is A Minefield.</h2>
-              <p className="text-lg text-foreground/80 max-w-3xl mx-auto">But there is a safe harbor. Introducing...</p>
-              <SkyflixLogo className="h-20 mx-auto" />
-              <p className="text-xl text-foreground/90 max-w-3xl mx-auto">The streaming service that protects your children's hearts and minds with 100% Christian content.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-              {benefits.map(benefit => (
-                <div key={benefit.title} className="flex flex-col items-center md:items-start text-center md:text-left gap-4 p-4 rounded-lg">
-                  {benefit.icon}
-                  <h3 className="text-xl font-semibold">{benefit.title}</h3>
-                  <p className="text-foreground/80">{benefit.description}</p>
-                </div>
-              ))}
-            </div>
-            
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold">Loved by Families Like Yours</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {testimonials.map((testimonial, i) => (
-                  <Card key={testimonial.id} className="bg-card/70 border-border/50 backdrop-blur-sm overflow-hidden">
-                    <CardContent className="p-0">
-                      <div className="relative">
-                        <Image src={testimonial.imageUrl} alt={testimonial.description} width={600} height={400} data-ai-hint={testimonial.imageHint} className="w-full object-cover aspect-video" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-center justify-center">
-                          <PlayCircle className="w-16 h-16 text-white/70" />
-                        </div>
-                      </div>
-                      <div className="p-4">
-                        <p className="italic">"Skyflix has been a blessing. I can finally let my kids watch TV without worrying."</p>
-                        <p className="font-semibold mt-2">- The {['Johnson', 'Smith', 'Miller'][i]} Family</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+            <div className="w-full text-center space-y-8 animate-in fade-in duration-1000">
+              <h2 className="text-3xl md:text-4xl font-bold text-primary">🎬 Por isso criamos o SKYFLIX — A Plataforma Cristã Infantil.</h2>
+              <div className="aspect-video bg-black rounded-lg overflow-hidden relative shadow-lg">
+                  <Image src="https://picsum.photos/seed/vsl/800/450" layout="fill" objectFit="cover" alt="Video Sobre Skyflix"/>
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <Play className="w-20 h-20 text-white/80 cursor-pointer hover:text-white transition-colors"/>
+                  </div>
               </div>
+              <p className="text-lg text-foreground/90 max-w-3xl mx-auto">Uma plataforma segura, com filmes, desenhos, músicas e atividades cristãs criadas para aproximar seu filho de Deus — e afastá-lo das más influências.</p>
+              <Button size="lg" onClick={() => setStage('social')}>👀 Ver exemplos do conteúdo da plataforma</Button>
             </div>
-
-            <Button size="lg" onClick={() => {
-              trackEvent('reveal_discount');
-              setStage('loading');
-            }}>
-              Unlock My Special Offer
-            </Button>
-          </div>
         );
 
+      case 'social':
+        return (
+            <div className="w-full text-center space-y-12 animate-in fade-in duration-1000">
+                <h2 className="text-3xl font-bold">O que as famílias estão amando no SKYFLIX:</h2>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-left max-w-3xl mx-auto">
+                    {["Filmes e desenhos 3D com personagens da Bíblia", "Historinhas em vídeo e áudio para dormir", "Jogos educativos e atividades bíblicas", "Material para colorir e aprender brincando", "Conteúdo atualizado semanalmente"].map(item => (
+                        <li key={item} className="flex items-center gap-3 text-base">
+                           <Check className="h-6 w-6 text-green-500 flex-shrink-0"/> {item}
+                        </li>
+                    ))}
+                </ul>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {[1, 2].map(i => (
+                        <div key={i} className="aspect-video bg-black rounded-lg overflow-hidden relative shadow-lg">
+                            <Image src={`https://picsum.photos/seed/depoimento${i}/400/225`} layout="fill" objectFit="cover" alt={`Depoimento de família ${i}`}/>
+                             <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                                <Play className="w-16 h-16 text-white/70 cursor-pointer hover:text-white transition-colors"/>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <Button size="lg" onClick={() => setStage('loading')}>💙 Quero garantir o acesso com desconto especial</Button>
+            </div>
+        );
+      
       case 'loading':
         return (
           <div className="flex flex-col items-center justify-center animate-in fade-in duration-500">
             <Loader2 className="h-16 w-16 animate-spin text-primary" />
-            <LoadingMessage />
+            <p className="mt-4 text-lg text-center text-foreground/80">⏳ Buscando um cupom de desconto especial pra você…</p>
           </div>
         );
 
       case 'offer':
         return (
-          <div className="text-center animate-in zoom-in-95 duration-500">
-            <h2 className="text-4xl font-bold text-primary mb-2">Congratulations!</h2>
-            <p className="text-xl text-foreground/80 mb-8">You've unlocked a special discount for your family.</p>
+          <div className="text-center animate-in zoom-in-95 duration-500 space-y-6">
+            <h2 className="text-3xl font-bold text-primary mb-2">🎉 Parabéns! Você acaba de desbloquear 50% de desconto vitalício na plataforma SKYFLIX.</h2>
+            <p className="text-lg text-foreground/80 mb-6">Crie um ambiente seguro e divertido para o seu filho aprender sobre Deus, longe das más influências.</p>
             
-            <div className="relative my-12 p-8 border-2 border-dashed border-accent rounded-xl bg-card/50 max-w-md mx-auto">
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 bg-background px-4">
-                <Ticket className="h-12 w-12 text-accent rotate-[-20deg]" />
-              </div>
-              <p className="text-lg">Your Exclusive Offer</p>
-              <p className="text-6xl font-bold my-2 text-primary">50% OFF</p>
-              <p className="text-lg">For your first 3 months!</p>
-              <p className="text-sm text-muted-foreground mt-4">CODE: FAMILYFIRST</p>
-            </div>
-            
-            <p className="text-lg text-foreground/80 mb-6">Click below to claim your discount and start your 7-day free trial.</p>
-            
-            <Button size="lg" onClick={handleCheckoutRedirect} className="bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/20 transform hover:scale-105 transition-transform">
-              Claim My 50% Discount Now
+            <Card className="bg-card/50 max-w-md mx-auto text-left">
+                <CardContent className="p-6">
+                    <ul className="space-y-3">
+                        {["📺 Filmes e clipes 3D dos personagens da Bíblia", "📖 Historinhas para leitura em família", "🔊 Áudios para dormir com orações guiadas", "🎲 Jogos e atividades educativas", "🎨 Desenhos bíblicos para colorir"].map((item, index) => (
+                            <li key={index} className="flex items-center gap-3">{item}</li>
+                        ))}
+                    </ul>
+                </CardContent>
+            </Card>
+
+            <Button size="lg" onClick={() => setIsModalOpen(true)} className="bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/20 w-full md:w-auto animate-pulse">
+              Quero Meu Acesso
             </Button>
-            <p className="text-sm text-muted-foreground mt-4">You'll be redirected to our secure checkout on Kiwify.</p>
+
+             <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground"><Lock className="h-4 w-4"/> 7 dias de garantia ou seu dinheiro de volta.</p>
+
+            <div className="text-left max-w-sm mx-auto space-y-4 pt-6">
+                <h3 className="text-lg font-semibold text-center mb-4">Perguntas Frequentes</h3>
+                <div className="border-t border-border/50 pt-2">
+                  <p className="font-semibold">O acesso é vitalício?</p>
+                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-green-500 h-4 w-4 flex-shrink-0"/> Sim.</p>
+                </div>
+                <div className="border-t border-border/50 pt-2">
+                  <p className="font-semibold">Funciona na TV?</p>
+                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-green-500 h-4 w-4 flex-shrink-0"/> Sim, é super fácil!</p>
+                </div>
+                <div className="border-t border-border/50 pt-2">
+                  <p className="font-semibold">É seguro para todas as idades?</p>
+                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-green-500 h-4 w-4 flex-shrink-0"/> 100%!</p>
+                </div>
+            </div>
           </div>
         );
     }
   };
 
   return (
-    <main className="flex min-h-screen w-full flex-col items-center justify-center p-4 sm:p-8">
-      <div className="w-full max-w-4xl">
-        {renderContent()}
-      </div>
-    </main>
+    <>
+      <main className="flex min-h-screen w-full flex-col items-center p-4 sm:p-8 pt-20 sm:pt-24 relative overflow-x-hidden">
+        <div className="absolute top-4 right-4 z-20">
+          <Button variant="ghost" size="icon" onClick={toggleMute}>
+            {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+          </Button>
+        </div>
+
+        <header className="w-full max-w-4xl flex flex-col items-center mb-8">
+            <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={180} height={45} priority className="mb-6"/>
+            <Progress value={progress} className="w-full h-2" />
+        </header>
+        
+        <div className="w-full max-w-4xl flex-grow flex flex-col items-center justify-center">
+          {renderContent()}
+        </div>
+      </main>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Só mais um passo para proteger seu filho!</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit(onModalSubmit)} className="space-y-4">
+            <div>
+              <Label htmlFor="name">Nome</Label>
+              <Input id="name" {...register("name", { required: "Nome é obrigatório" })} placeholder="Seu nome completo"/>
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+            </div>
+            <div>
+              <Label htmlFor="email">E-mail</Label>
+              <Input id="email" type="email" {...register("email", { required: "E-mail é obrigatório", pattern: { value: /^\S+@\S+$/i, message: "E-mail inválido" } })} placeholder="seu-melhor@email.com" />
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+            </div>
+             <div>
+              <Label htmlFor="phone">Telefone</Label>
+              <Input id="phone" type="tel" {...register("phone", { required: "Telefone é obrigatório" })} placeholder="(XX) XXXXX-XXXX" />
+              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
+            </div>
+            <Button type="submit" className="w-full bg-green-500 hover:bg-green-600">Quero meu acesso</Button>
+          </form>
+        </DialogContent>
+      </Dialog>
+      <style jsx global>{`
+        @keyframes scroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        .animate-scroll {
+          display: flex;
+          width: 200%;
+          animation: scroll 30s linear infinite;
+        }
+      `}</style>
+    </>
   );
 }

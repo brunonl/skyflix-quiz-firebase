@@ -6,21 +6,23 @@ const StarsBackground = () => {
   const [stars, setStars] = useState<{ top: string; left: string; size: number; delay: number; }[]>([]);
 
   useEffect(() => {
-    // This check is to prevent window not defined error during server-side rendering
-    if (typeof window !== 'undefined') {
-      const generateStars = () => {
-        const newStars = Array.from({ length: 100 }).map(() => ({
-          top: `${Math.random() * 100}%`,
-          left: `${Math.random() * 100}%`,
-          size: Math.random() * 2 + 1,
-          delay: Math.random() * 5,
-        }));
-        setStars(newStars);
-      };
+    const generateStars = () => {
+      const newStars = Array.from({ length: 100 }).map(() => ({
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        size: Math.random() * 2 + 1,
+        delay: Math.random() * 5,
+      }));
+      setStars(newStars);
+    };
 
-      generateStars();
-    }
+    generateStars();
   }, []);
+
+  // Return null on the server to avoid hydration mismatch
+  if (typeof window === 'undefined') {
+    return null;
+  }
 
   return (
     <>
