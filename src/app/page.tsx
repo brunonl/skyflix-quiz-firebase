@@ -181,7 +181,7 @@ export default function Home() {
               </div>
             </div>
             <p className="mb-2 font-semibold text-white">Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto" variant="primary" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <Button size="lg" className="w-full md:w-auto" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
@@ -363,5 +363,7 @@ export default function Home() {
     </>
   );
 }
+
+    
 
     
