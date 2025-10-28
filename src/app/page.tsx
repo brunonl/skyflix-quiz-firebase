@@ -50,15 +50,19 @@ export default function Home() {
   }, []);
   
   useEffect(() => {
-    audioRef.current = document.getElementById("background-music") as HTMLAudioElement;
-    // Autoplay with sound is often blocked. We'll attempt to play it, 
-    // and rely on a user click if it fails.
-    playAudio();
-    document.addEventListener('click', playAudio, { once: true });
-    
-    return () => {
-      document.removeEventListener('click', playAudio);
-    };
+    const audioEl = document.getElementById("background-music") as HTMLAudioElement;
+    if (audioEl) {
+      audioRef.current = audioEl;
+      // Autoplay with sound is often blocked. We'll attempt to play it, 
+      // and rely on a user click if it fails.
+      playAudio();
+      const playOnClick = () => playAudio();
+      document.addEventListener('click', playOnClick, { once: true });
+      
+      return () => {
+        document.removeEventListener('click', playOnClick);
+      };
+    }
   }, [playAudio]);
 
   useEffect(() => {
@@ -127,13 +131,13 @@ export default function Home() {
         }
         return !prev;
     });
-};
+  };
 
   const renderContent = () => {
     switch (stage) {
       case 'intro':
         return (
-          <div className="text-center animate-in fade-in duration-500">
+          <div className="text-center animate-in fade-in duration-500 w-full">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-2xl mx-auto">O que seu filho está assistindo hoje... pode moldar quem ele será amanhã.</h1>
             <p className="text-base md:text-lg text-foreground/80 mb-8 max-w-2xl mx-auto">
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
@@ -142,14 +146,14 @@ export default function Home() {
                 <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-background via-transparent to-background z-10"></div>
                 <div className="flex animate-scroll">
                     {[...sliderImages, ...sliderImages].map((src, i) => (
-                        <div key={i} className="flex-shrink-0 w-1/3 sm:w-1/4 md:w-1/6 mx-2">
+                        <div key={i} className="flex-shrink-0 w-1/3 sm:w-1/4 md:w-1/6 mx-1">
                              <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={150} height={225} className="rounded-lg shadow-lg" />
                         </div>
                     ))}
                 </div>
             </div>
-            <Button size="lg" className="bg-black text-white hover:bg-black/80 w-full md:w-auto" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
-            <p className="mt-2 font-semibold">Quero proteger o meu filho agora!</p>
+            <p className="mb-2 font-semibold">Quero proteger o meu filho agora!</p>
+            <Button size="lg" className="w-full md:w-auto" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
@@ -260,7 +264,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex min-h-screen w-full flex-col items-center p-4 sm:p-8 pt-20 sm:pt-24 relative overflow-x-hidden">
+      <main className="flex min-h-screen w-full flex-col items-center p-4 sm:p-8 pt-6 sm:pt-10 relative overflow-x-hidden">
         <div className="absolute top-4 right-4 z-20">
           <Button variant="ghost" size="icon" onClick={toggleMute}>
             {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
@@ -268,7 +272,7 @@ export default function Home() {
         </div>
 
         <header className="w-full max-w-4xl flex flex-col items-center mb-8">
-            <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={270} height={68} priority className="mb-6"/>
+            <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={350} height={88} priority className="mb-4"/>
             <Progress value={progress} className="w-full h-2" />
         </header>
         
@@ -309,7 +313,7 @@ export default function Home() {
         }
         .animate-scroll {
           display: flex;
-          width: 200%;
+          width: calc(200% + 24px);
           animation: scroll 30s linear infinite;
         }
       `}</style>
