@@ -189,7 +189,7 @@ export default function Home() {
               </Carousel>
             </div>
             <p className="mb-2 font-semibold">Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto bg-secondary text-secondary-foreground hover:bg-secondary/90" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <Button size="lg" className="w-full md:w-auto bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
@@ -205,10 +205,8 @@ export default function Home() {
                   variant="outline"
                   size="lg" 
                   className={cn(
-                    "justify-start text-left h-auto py-4 text-base w-full",
-                    selectedAnswer === answer 
-                      ? "bg-primary/20 text-foreground border-primary" 
-                      : "border-primary/40 text-foreground/80 hover:bg-primary/10 hover:border-primary"
+                    "justify-start text-left h-auto py-4 text-base w-full border-primary/40 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground",
+                    selectedAnswer === answer && "bg-primary/20 text-foreground border-primary" 
                   )} 
                   onClick={() => handleAnswer(answer)}
                 >
