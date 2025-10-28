@@ -207,7 +207,7 @@ export default function Home() {
                   className={cn(
                     "justify-start text-left h-auto py-4 text-base w-full",
                     selectedAnswer === answer 
-                      ? "bg-primary text-primary-foreground border-primary" 
+                      ? "bg-primary/20 text-foreground border-primary" 
                       : "border-primary/40 text-foreground/80 hover:bg-primary/10 hover:border-primary"
                   )} 
                   onClick={() => handleAnswer(answer)}
