@@ -156,10 +156,10 @@ export default function Home() {
       case 'intro':
         return (
           <div className="text-center animate-in fade-in duration-500 w-full flex flex-col items-center">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-white">
               O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
             </h1>
-            <p className="text-lg md:text-xl text-yellow-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto">
               Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
             </p>
             <div className="w-full overflow-hidden relative mb-8">
@@ -173,7 +173,7 @@ export default function Home() {
                   <CarouselContent className="-ml-2">
                       {[...sliderImages, ...sliderImages].map((src, i) => (
                           <CarouselItem key={i} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 pl-2">
-                               <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="rounded-lg shadow-lg w-full h-auto object-cover" />
+                               <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-auto object-cover" />
                           </CarouselItem>
                       ))}
                   </CarouselContent>
@@ -191,7 +191,7 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
             <div className="flex flex-col gap-4 mt-8">
               {question.answers.map((answer, i) => (
-                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full hover:bg-primary/20 border-primary/50 hover:border-primary" onClick={() => handleAnswer(answer)}>
+                <Button key={i} variant="outline" size="lg" className="justify-start text-left h-auto py-4 text-base w-full border-primary/50 hover:border-primary opacity-80 hover:opacity-100" onClick={() => handleAnswer(answer)}>
                   {answer}
                 </Button>
               ))}
@@ -203,7 +203,7 @@ export default function Home() {
         return (
             <div className="w-full text-center space-y-8 animate-in fade-in duration-1000">
               <h2 className="text-3xl md:text-4xl font-bold text-primary">🎬 Por isso criamos o SKYFLIX — A Plataforma Cristã Infantil.</h2>
-              <div className="aspect-video bg-black rounded-lg overflow-hidden relative shadow-lg">
+              <div className="aspect-video bg-black overflow-hidden relative shadow-lg">
                   <Image src="https://picsum.photos/seed/vsl/800/450" layout="fill" objectFit="cover" alt="Video Sobre Skyflix"/>
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                     <Play className="w-20 h-20 text-white/80 cursor-pointer hover:text-white transition-colors"/>
@@ -221,13 +221,13 @@ export default function Home() {
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-left max-w-3xl mx-auto">
                     {["Filmes e desenhos 3D com personagens da Bíblia", "Historinhas em vídeo e áudio para dormir", "Jogos educativos e atividades bíblicas", "Material para colorir e aprender brincando", "Conteúdo atualizado semanalmente"].map(item => (
                         <li key={item} className="flex items-center gap-3 text-base">
-                           <Check className="h-6 w-6 text-green-500 flex-shrink-0"/> {item}
+                           <Check className="h-6 w-6 text-secondary flex-shrink-0"/> {item}
                         </li>
                     ))}
                 </ul>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {[1, 2].map(i => (
-                        <div key={i} className="aspect-video bg-black rounded-lg overflow-hidden relative shadow-lg">
+                        <div key={i} className="aspect-video bg-black overflow-hidden relative shadow-lg">
                             <Image src={`https://picsum.photos/seed/depoimento${i}/400/225`} layout="fill" objectFit="cover" alt={`Depoimento de família ${i}`}/>
                              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                                 <Play className="w-16 h-16 text-white/70 cursor-pointer hover:text-white transition-colors"/>
@@ -263,7 +263,7 @@ export default function Home() {
                 </CardContent>
             </Card>
 
-            <Button size="lg" onClick={() => setIsModalOpen(true)} className="bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/20 w-full md:w-auto animate-pulse">
+            <Button size="lg" onClick={() => setIsModalOpen(true)} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg shadow-secondary/20 w-full md:w-auto animate-pulse">
               Quero Meu Acesso
             </Button>
 
@@ -273,15 +273,15 @@ export default function Home() {
                 <h3 className="text-lg font-semibold text-center mb-4">Perguntas Frequentes</h3>
                 <div className="border-t border-border/50 pt-2">
                   <p className="font-semibold">O acesso é vitalício?</p>
-                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-green-500 h-4 w-4 flex-shrink-0"/> Sim.</p>
+                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim.</p>
                 </div>
                 <div className="border-t border-border/50 pt-2">
                   <p className="font-semibold">Funciona na TV?</p>
-                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-green-500 h-4 w-4 flex-shrink-0"/> Sim, é super fácil!</p>
+                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim, é super fácil!</p>
                 </div>
                 <div className="border-t border-border/50 pt-2">
                   <p className="font-semibold">É seguro para todas as idades?</p>
-                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-green-500 h-4 w-4 flex-shrink-0"/> 100%!</p>
+                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> 100%!</p>
                 </div>
             </div>
           </div>
@@ -342,7 +342,7 @@ export default function Home() {
                 <Input id="phone" type="tel" {...register("phone", { required: "Telefone é obrigatório" })} placeholder="Seu WhatsApp (com DDD)" />
                 {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
               </div>
-              <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white rounded-full text-lg h-12">Quero meu acesso com 50% OFF</Button>
+              <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white text-lg h-12">Quero meu acesso com 50% OFF</Button>
             </form>
             <p className="text-sm text-muted-foreground flex items-center justify-center gap-2 pt-2">
               <Lock className="h-4 w-4"/> Seus dados estão seguros conosco
@@ -353,5 +353,3 @@ export default function Home() {
     </>
   );
 }
-
-    

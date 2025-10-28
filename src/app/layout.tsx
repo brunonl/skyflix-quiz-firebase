@@ -3,6 +3,9 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import StarsBackground from '@/components/stars-background';
 import Script from 'next/script';
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Skyflix Emotion Quiz',
@@ -17,10 +20,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-        
         <Script id="gtm-script" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -31,7 +30,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="font-body antialiased">
+      <body className={`${inter.className} antialiased`}>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXX"
