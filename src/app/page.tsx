@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, MouseEvent, TouchEvent } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -43,14 +43,16 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isMuted, toggleMute } = useMusic(); // Use the context hook
-
+  const { isMuted, toggleMute } = useMusic();
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
 
-  // Removed all audio related state and effects, now managed by MusicContext and MusicPlayer
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
-    const totalSteps = quizQuestions.length + 4; // intro, quizzes, reveal, social, loading, offer
+    const totalSteps = quizQuestions.length + 4;
     let currentStep = 0;
     if(stage === 'intro') currentStep = 0;
     if(stage === 'quiz') currentStep = questionIndex + 1;
@@ -124,6 +126,52 @@ export default function Home() {
     window.location.href = "https://pay.kiwify.com.br/0nFE1EN";
   };
 
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
+    setIsDown(true);
+    sliderRef.current.classList.add('grabbing');
+    setStartX(e.pageX - sliderRef.current.offsetLeft);
+    setScrollLeft(sliderRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    if (!sliderRef.current) return;
+    setIsDown(false);
+    sliderRef.current.classList.remove('grabbing');
+  };
+
+  const handleMouseUp = () => {
+    if (!sliderRef.current) return;
+    setIsDown(false);
+    sliderRef.current.classList.remove('grabbing');
+  };
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!isDown || !sliderRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // O multiplicador acelera a rolagem
+    sliderRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
+    setIsDown(true);
+    setStartX(e.touches[0].pageX - sliderRef.current.offsetLeft);
+    setScrollLeft(sliderRef.current.scrollLeft);
+  };
+
+  const handleTouchEnd = () => {
+    setIsDown(false);
+  };
+
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    if (!isDown || !sliderRef.current) return;
+    const x = e.touches[0].pageX - sliderRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    sliderRef.current.scrollLeft = scrollLeft - walk;
+  };
+
   const renderContent = () => {
     switch (stage) {
       case 'intro':
@@ -141,20 +189,33 @@ export default function Home() {
             <p className="mb-2 font-semibold text-white">💙 Quero proteger o meu filho agora!</p>
             <Button size="lg" className="w-full md:w-auto mb-10 animate-zoom-pulse" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
 
-            <div className="w-full overflow-hidden relative mb-[60px]">
-              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
-              <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
-              <div className="flex w-max scrolling-wrapper">
-                {[...sliderImages, ...sliderImages].map((src, i) => (
-                  <div key={i} className="w-[200px] h-[300px] flex-shrink-0 px-2">
-                    <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-full object-cover" />
-                  </div>
-                ))}
+            <div className="w-full relative mb-[60px]">
+              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+              <div 
+                ref={sliderRef}
+                onMouseDown={handleMouseDown}
+                onMouseLeave={handleMouseLeave}
+                onMouseUp={handleMouseUp}
+                onMouseMove={handleMouseMove}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onTouchMove={handleTouchMove}
+                className="w-full overflow-x-auto cursor-grab hide-scrollbar"
+              >
+                <div className="flex w-max scrolling-wrapper select-none">
+                  {[...sliderImages, ...sliderImages].map((src, i) => (
+                    <div key={i} className="w-[200px] h-[300px] flex-shrink-0 px-2">
+                      <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-full object-cover pointer-events-none" />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         );
 
+      // ... resto do código permanece o mesmo
       case 'quiz':
         const question = quizQuestions[questionIndex];
         return (
@@ -284,6 +345,16 @@ export default function Home() {
         }
         .animate-zoom-pulse {
           animation: zoom-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .grabbing {
+          cursor: grabbing;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;  /* IE and Edge */
+          scrollbar-width: none;  /* Firefox */
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none; /* Chrome, Safari, Opera */
         }
       `}</style>
       <main className="flex min-h-screen w-full flex-col items-center pt-4 sm:pt-5 relative overflow-x-hidden">
