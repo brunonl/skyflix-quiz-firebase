@@ -139,7 +139,7 @@ export default function Home() {
               O <strong className="text-tertiary">SKYFLIX</strong> foi criado pra mudar isso, uma plataforma cristã segura, com <strong className="text-tertiary">conteúdos cuidadosamente selecionados</strong> de forma criteriosa, que ensinam sobre Deus de um jeito leve, divertido e livre de influências ruins.
             </p>
             <p className="mb-2 font-semibold text-white">💙 Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto mb-10" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <Button size="lg" className="w-full md:w-auto mb-10 animate-zoom-pulse" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
 
             <div className="w-full overflow-hidden relative mb-[60px]">
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
@@ -273,6 +273,19 @@ export default function Home() {
 
   return (
     <>
+      <style jsx global>{`
+        @keyframes zoom-pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+        .animate-zoom-pulse {
+          animation: zoom-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+      `}</style>
       <main className="flex min-h-screen w-full flex-col items-center pt-4 sm:pt-5 relative overflow-x-hidden">
         <div className="absolute top-4 right-4 z-20">
           <Button variant="ghost" size="icon" onClick={toggleMute}>
