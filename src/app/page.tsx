@@ -19,7 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { useMusic } from '@/app/layout'; // Import useMusic hook
+import { useMusic } from "@/app/layout";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
 type FormValues = { name: string; email: string; phone: string; };
@@ -198,7 +199,7 @@ export default function Home() {
               O <strong className="text-tertiary">SKYFLIX</strong> foi criado pra mudar isso, uma plataforma cristã segura, com <strong className="text-tertiary">conteúdos cuidadosamente selecionados</strong> de forma criteriosa, que ensinam sobre Deus de um jeito leve, divertido e livre de influências ruins.
             </p>
             <p className="mb-2 font-semibold text-white">💙 Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto mb-10 animate-zoom-pulse" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+            <Button size="lg" className="w-full md:w-auto mb-10 animate-zoom-pulse bg-primary hover:bg-primary/90 text-primary-foreground" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
 
             <div className="w-full relative mb-[60px]">
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
@@ -226,7 +227,6 @@ export default function Home() {
           </div>
         );
 
-      // ... resto do código permanece o mesmo
       case 'quiz':
         const question = quizQuestions[questionIndex];
         return (
@@ -301,42 +301,65 @@ export default function Home() {
 
       case 'offer':
         return (
-          <div className="text-center animate-in zoom-in-95 duration-500 space-y-6">
-            <h2 className="text-3xl font-bold text-primary mb-2">🎉 Parabéns! Você acaba de desbloquear 50% de desconto vitalício na plataforma SKYFLIX.</h2>
-            <p className="text-lg text-foreground/80 mb-6">Crie um ambiente seguro e divertido para o seu filho aprender sobre Deus, longe das más influências.</p>
-            
-            <Card className="bg-card/50 max-w-md mx-auto text-left">
-                <CardContent className="p-6">
-                    <ul className="space-y-3">
-                        {["📺 Filmes e clipes 3D dos personagens da Bíblia", "📖 Historinhas para leitura em família", "🔊 Áudios para dormir com orações guiadas", "🎲 Jogos e atividades educativas", "🎨 Desenhos bíblicos para colorir"].map((item, index) => (
-                            <li key={index} className="flex items-center gap-3">{item}</li>
-                        ))}
-                    </ul>
-                </CardContent>
-            </Card>
+            <div className="text-center animate-in zoom-in-95 duration-500 space-y-6 max-w-3xl mx-auto">
+              <h2 className="text-3xl font-bold text-primary mb-2">🎉 Parabéns! Seu cupom de desconto foi ativado com sucesso!</h2>
+              <p className="text-lg text-foreground/80 mb-6">
+                Você acaba de garantir 50% de desconto vitalício no acesso à ✨ SKYFLIX – A Plataforma Cristã Infantil.
+                <br/>
+                Agora o seu filho pode aprender sobre Deus brincando, em um ambiente seguro e livre de más influências — com um investimento único e vitalício.
+              </p>
+              
+              <Card className="bg-card/70 border-primary/50 shadow-lg shadow-primary/10 max-w-md mx-auto text-center py-4">
+                  <CardContent className="p-2">
+                      <p className="text-lg text-foreground/80">🕊️ De <span className="line-through">R$99,00</span> → por apenas</p>
+                      <p className="text-4xl font-bold text-white my-1">R$47,90</p>
+                      <p className="text-sm text-foreground/70">💙 (Desconto vitalício aplicado automaticamente pelo seu cupom)</p>
+                  </CardContent>
+              </Card>
 
-            <Button size="lg" onClick={() => setIsModalOpen(true)} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg shadow-secondary/20 w-full md:w-auto animate-pulse">
-              Quero Meu Acesso
-            </Button>
+              <div className="space-y-4 pt-4">
+                <Card className="bg-card/50 border border-border/50 text-left">
+                  <CardContent className="p-4 flex items-center gap-4">
+                    <Checkbox id="bump1" className="w-6 h-6"/>
+                    <Label htmlFor="bump1" className="flex-grow">
+                      <p className="font-semibold text-base">🔥 Atividades e Jogos Bíblicos Extras</p>
+                      <p className="text-sm text-muted-foreground">+100 novos desafios interativos por apenas R$14,90</p>
+                    </Label>
+                  </CardContent>
+                </Card>
+                <Card className="bg-card/50 border border-border/50 text-left">
+                  <CardContent className="p-4 flex items-center gap-4">
+                    <Checkbox id="bump2" className="w-6 h-6"/>
+                    <Label htmlFor="bump2" className="flex-grow">
+                      <p className="font-semibold text-base">🙏 Guia de Orações Diárias para Crianças</p>
+                      <p className="text-sm text-muted-foreground">Conteúdo digital exclusivo, por apenas R$14,90</p>
+                    </Label>
+                  </CardContent>
+                </Card>
+              </div>
 
-             <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground"><Lock className="h-4 w-4"/> 7 dias de garantia ou seu dinheiro de volta.</p>
+              <Button size="lg" onClick={() => setIsModalOpen(true)} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg shadow-secondary/20 w-full md:w-auto animate-pulse mt-8">
+                Quero Meu Acesso
+              </Button>
 
-            <div className="text-left max-w-sm mx-auto space-y-4 pt-6">
-                <h3 className="text-lg font-semibold text-center mb-4">Perguntas Frequentes</h3>
-                <div className="border-t border-border/50 pt-2">
-                  <p className="font-semibold">O acesso é vitalício?</p>
-                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim.</p>
-                </div>
-                <div className="border-t border-border/50 pt-2">
-                  <p className="font-semibold">Funciona na TV?</p>
-                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim, é super fácil!</p>
-                </div>
-                <div className="border-t border-border/50 pt-2">
-                  <p className="font-semibold">É seguro para todas as idades?</p>
-                  <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> 100%!</p>
-                </div>
+               <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground"><Lock className="h-4 w-4"/> 7 dias de garantia ou seu dinheiro de volta.</p>
+
+              <div className="text-left max-w-sm mx-auto space-y-4 pt-6">
+                  <h3 className="text-lg font-semibold text-center mb-4">Perguntas Frequentes</h3>
+                  <div className="border-t border-border/50 pt-2">
+                    <p className="font-semibold">O acesso é vitalício?</p>
+                    <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim.</p>
+                  </div>
+                  <div className="border-t border-border/50 pt-2">
+                    <p className="font-semibold">Funciona na TV?</p>
+                    <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim, é super fácil!</p>
+                  </div>
+                  <div className="border-t border-border/50 pt-2">
+                    <p className="font-semibold">É seguro para todas as idades?</p>
+                    <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> 100%!</p>
+                  </div>
+              </div>
             </div>
-          </div>
         );
     }
   };
@@ -380,7 +403,7 @@ export default function Home() {
                 <div className="relative w-full flex items-center justify-center">
                    {showBackButton && (
                     <Button variant="ghost" size="icon" onClick={handleBack} className="absolute left-0 bg-primary/10 hover:bg-primary/20">
-                      <ChevronLeft className="h-6 w-6" />
+                      <ChevronLeft className="h-6 w-6 text-primary/70" />
                     </Button>
                   )}
                   <Image src="/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-2 sm:mb-4"/>
