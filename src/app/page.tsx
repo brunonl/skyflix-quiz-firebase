@@ -1,6 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef, MouseEvent, TouchEvent } from "react";
+
+// Função utilitária para tocar áudio
+function playSound(src: string) {
+  const audio = new window.Audio(src);
+  audio.volume = 0.7;
+  audio.play();
+}
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -34,7 +41,7 @@ const sliderImages = [
   "/images/h9.png",
   "/images/h10.png",
   "/images/h11.png",
-];
+]; // Caminhos já estão corretos para pasta public
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>('intro');
@@ -74,6 +81,9 @@ export default function Home() {
       }, 3000);
       return () => clearTimeout(timer);
     }
+    if (stage === 'offer') {
+      playSound('/music/win.mp3'); // Som ao ganhar desconto
+    }
   }, [stage]);
   
   useEffect(() => {
@@ -92,6 +102,7 @@ export default function Home() {
       question_text: quizQuestions[questionIndex].text,
       answer: answer,
     });
+    playSound('/music/step.mp3'); // Som ao avançar etapa
     setTimeout(() => {
       if (questionIndex < quizQuestions.length - 1) {
         setQuestionIndex(prev => prev + 1);
@@ -177,13 +188,13 @@ export default function Home() {
       case 'intro':
         return (
           <div className="text-center animate-in fade-in duration-500 w-full flex flex-col items-center">
-            <h1 className="text-2xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-tertiary">
+            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-tertiary">
               Enquanto você trabalha, a internet educa.
             </h1>
-            <p className="text-lg md:text-3xl font-medium text-white mb-4 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-3xl font-medium text-white mb-4 max-w-3xl mx-auto">
               O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
             </p>
-            <p className="text-base md:text-lg text-white/80 mb-6 max-w-3xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-white/80 mb-6 max-w-3xl mx-auto">
               O <strong className="text-tertiary">SKYFLIX</strong> foi criado pra mudar isso, uma plataforma cristã segura, com <strong className="text-tertiary">conteúdos cuidadosamente selecionados</strong> de forma criteriosa, que ensinam sobre Deus de um jeito leve, divertido e livre de influências ruins.
             </p>
             <p className="mb-2 font-semibold text-white">💙 Quero proteger o meu filho agora!</p>
@@ -220,7 +231,7 @@ export default function Home() {
         const question = quizQuestions[questionIndex];
         return (
           <div className="w-full animate-in fade-in duration-500">
-            <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
+            <h2 className="text-lg sm:text-xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
             <div className="flex flex-col gap-4 mt-8">
               {question.answers.map((answer, i) => (
                 <Button 
@@ -372,7 +383,7 @@ export default function Home() {
                       <ChevronLeft className="h-6 w-6" />
                     </Button>
                   )}
-                  <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-2 sm:mb-4"/>
+                  <Image src="/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-2 sm:mb-4"/>
                 </div>
                 <Progress value={progress} className="w-full h-2 max-w-md" />
             </header>
