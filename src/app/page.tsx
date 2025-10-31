@@ -129,13 +129,16 @@ export default function Home() {
       case 'intro':
         return (
           <div className="text-center animate-in fade-in duration-500 w-full flex flex-col items-center">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-white">
-              O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.<br />Enquanto você trabalha, a internet educa.
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-tertiary">
+              Enquanto você trabalha, a internet educa.
             </h1>
-            <p className="text-lg md:text-xl text-white/80 max-w-5xl mx-auto">
-              O <strong>SKYFLIX</strong> foi criado pra mudar isso, uma plataforma cristã segura, com <strong>conteúdos cuidadosamente selecionados de forma criteriosa</strong>, que ensinam sobre Deus de um jeito leve, divertido e livre de influências ruins.
+            <p className="text-lg md:text-3xl font-medium text-white mb-4 max-w-3xl mx-auto">
+              O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
             </p>
-            <p className="mb-2 font-semibold text-white mt-8">💙 Quero proteger o meu filho agora!</p>
+            <p className="text-base md:text-lg text-white/80 mb-6 max-w-3xl mx-auto">
+              O <strong className="text-tertiary">SKYFLIX</strong> foi criado pra mudar isso, uma plataforma cristã segura, com <strong className="text-tertiary">conteúdos cuidadosamente selecionados</strong> de forma criteriosa, que ensinam sobre Deus de um jeito leve, divertido e livre de influências ruins.
+            </p>
+            <p className="mb-2 font-semibold text-white">💙 Quero proteger o meu filho agora!</p>
             <Button size="lg" className="w-full md:w-auto mb-10" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
 
             <div className="w-full overflow-hidden relative mb-[60px]">
@@ -270,7 +273,7 @@ export default function Home() {
 
   return (
     <>
-      <main className="flex min-h-screen w-full flex-col items-center pt-6 sm:pt-10 relative overflow-x-hidden">
+      <main className="flex min-h-screen w-full flex-col items-center pt-4 sm:pt-5 relative overflow-x-hidden">
         <div className="absolute top-4 right-4 z-20">
           <Button variant="ghost" size="icon" onClick={toggleMute}>
             {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
@@ -278,14 +281,14 @@ export default function Home() {
         </div>
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-4 px-4 sm:px-8">
-            <header className="w-full flex flex-col items-center gap-4 mb-8">
+            <header className="w-full flex flex-col items-center gap-2 mb-4 sm:gap-4 sm:mb-8">
                 <div className="relative w-full flex items-center justify-center">
                    {showBackButton && (
                     <Button variant="ghost" size="icon" onClick={handleBack} className="absolute left-0 bg-primary/10 hover:bg-primary/20">
                       <ChevronLeft className="h-6 w-6" />
                     </Button>
                   )}
-                  <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-4"/>
+                  <Image src="https://skyflix-quiz.vercel.app/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-2 sm:mb-4"/>
                 </div>
                 <Progress value={progress} className="w-full h-2 max-w-md" />
             </header>
