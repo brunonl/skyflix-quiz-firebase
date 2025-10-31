@@ -239,7 +239,7 @@ export default function Home() {
                   size="lg" 
                   className={cn(
                     "justify-start text-left h-auto py-4 text-sm sm:text-base w-full bg-card/50 border-border text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground whitespace-normal",
-                    selectedAnswer === answer && "bg-primary/20 text-foreground border-primary" 
+                    selectedAnswer === answer ? "bg-primary/20 text-foreground border-primary" : "bg-card/50 border-border text-foreground/80"
                   )} 
                   onClick={() => handleAnswer(answer)}
                 >
@@ -308,7 +308,7 @@ export default function Home() {
               Agora o seu filho pode aprender sobre Deus brincando, em um ambiente seguro e livre de más influências — com um investimento único e vitalício.
             </p>
             
-            <Card className="bg-card/70 border-primary/50 shadow-lg shadow-primary/10 max-w-md mx-auto text-center py-4">
+            <Card className="bg-card/70 border-2 border-primary shadow-[0_0_20px] shadow-primary/50 max-w-md mx-auto text-center py-4">
                 <CardContent className="p-2">
                     <p className="text-md sm:text-lg text-foreground/80">🕊️ De <span className="line-through">R$99,00</span> → por apenas</p>
                     <p className="text-3xl sm:text-4xl font-bold text-white my-1">R$47,90</p>
@@ -317,12 +317,12 @@ export default function Home() {
             </Card>
 
             <div className="space-y-4 pt-4 text-sm sm:text-base">
-              <div className="bg-card/50 border border-border/50 p-4 rounded-lg text-left">
-                  <p className="font-semibold text-sm sm:text-base">🔥 Atividades e Jogos Bíblicos Extras</p>
+              <div className="bg-card/50 border border-border/50 p-4 rounded-lg text-left text-sm sm:text-base">
+                  <p className="font-semibold">🔥 Atividades e Jogos Bíblicos Extras</p>
                   <p className="text-xs sm:text-sm text-muted-foreground">+100 novos desafios interativos por apenas R$14,90</p>
               </div>
-              <div className="bg-card/50 border border-border/50 p-4 rounded-lg text-left">
-                  <p className="font-semibold text-sm sm:text-base">🙏 Guia de Orações Diárias para Crianças</p>
+              <div className="bg-card/50 border border-border/50 p-4 rounded-lg text-left text-sm sm:text-base">
+                  <p className="font-semibold">🙏 Guia de Orações Diárias para Crianças</p>
                   <p className="text-xs sm:text-sm text-muted-foreground">Conteúdo digital exclusivo, por apenas R$14,90</p>
               </div>
             </div>
@@ -387,7 +387,7 @@ export default function Home() {
           </Button>
         </div>
 
-        <div className="w-full max-w-4xl flex flex-col items-center gap-4 px-4 sm:px-8">
+        <div className="w-full max-w-4xl flex flex-col items-center gap-2 sm:gap-4 px-4 sm:px-8 pb-12 sm:pb-0">
             <header className="w-full flex flex-col items-center gap-2 mb-4 sm:gap-4 sm:mb-8">
                 <div className="relative w-full flex items-center justify-center">
                    {showBackButton && (
