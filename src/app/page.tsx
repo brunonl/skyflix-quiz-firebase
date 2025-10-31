@@ -20,7 +20,6 @@ import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { useMusic } from "@/app/layout";
-import { Checkbox } from "@/components/ui/checkbox";
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
 type FormValues = { name: string; email: string; phone: string; };
@@ -239,7 +238,7 @@ export default function Home() {
                   variant="outline"
                   size="lg" 
                   className={cn(
-                    "justify-start text-left h-auto py-4 text-base w-full bg-transparent border-primary/40 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground whitespace-normal",
+                    "justify-start text-left h-auto py-4 text-sm sm:text-base w-full bg-black/30 border-primary/40 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground whitespace-normal",
                     selectedAnswer === answer && "bg-primary/20 text-foreground border-primary" 
                   )} 
                   onClick={() => handleAnswer(answer)}
@@ -301,9 +300,9 @@ export default function Home() {
 
       case 'offer':
         return (
-            <div className="text-center animate-in zoom-in-95 duration-500 space-y-6 max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold text-primary mb-2">🎉 Parabéns! Seu cupom de desconto foi ativado com sucesso!</h2>
-              <p className="text-lg text-foreground/80 mb-6">
+            <div className="text-center animate-in zoom-in-95 duration-500 space-y-6 max-w-3xl mx-auto pb-8 sm:pb-0">
+              <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">🎉 Parabéns! Seu cupom de desconto foi ativado com sucesso!</h2>
+              <p className="text-base sm:text-lg text-foreground/80 mb-6">
                 Você acaba de garantir 50% de desconto vitalício no acesso à ✨ SKYFLIX – A Plataforma Cristã Infantil.
                 <br/>
                 Agora o seu filho pode aprender sobre Deus brincando, em um ambiente seguro e livre de más influências — com um investimento único e vitalício.
@@ -311,29 +310,23 @@ export default function Home() {
               
               <Card className="bg-card/70 border-primary/50 shadow-lg shadow-primary/10 max-w-md mx-auto text-center py-4">
                   <CardContent className="p-2">
-                      <p className="text-lg text-foreground/80">🕊️ De <span className="line-through">R$99,00</span> → por apenas</p>
-                      <p className="text-4xl font-bold text-white my-1">R$47,90</p>
-                      <p className="text-sm text-foreground/70">💙 (Desconto vitalício aplicado automaticamente pelo seu cupom)</p>
+                      <p className="text-md sm:text-lg text-foreground/80">🕊️ De <span className="line-through">R$99,00</span> → por apenas</p>
+                      <p className="text-3xl sm:text-4xl font-bold text-white my-1">R$47,90</p>
+                      <p className="text-xs sm:text-sm text-foreground/70">💙 (Desconto vitalício aplicado automaticamente pelo seu cupom)</p>
                   </CardContent>
               </Card>
 
               <div className="space-y-4 pt-4">
                 <Card className="bg-card/50 border border-border/50 text-left">
-                  <CardContent className="p-4 flex items-center gap-4">
-                    <Checkbox id="bump1" className="w-6 h-6"/>
-                    <Label htmlFor="bump1" className="flex-grow">
-                      <p className="font-semibold text-base">🔥 Atividades e Jogos Bíblicos Extras</p>
-                      <p className="text-sm text-muted-foreground">+100 novos desafios interativos por apenas R$14,90</p>
-                    </Label>
+                  <CardContent className="p-4">
+                      <p className="font-semibold text-sm sm:text-base">🔥 Atividades e Jogos Bíblicos Extras</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">+100 novos desafios interativos por apenas R$14,90</p>
                   </CardContent>
                 </Card>
                 <Card className="bg-card/50 border border-border/50 text-left">
-                  <CardContent className="p-4 flex items-center gap-4">
-                    <Checkbox id="bump2" className="w-6 h-6"/>
-                    <Label htmlFor="bump2" className="flex-grow">
-                      <p className="font-semibold text-base">🙏 Guia de Orações Diárias para Crianças</p>
-                      <p className="text-sm text-muted-foreground">Conteúdo digital exclusivo, por apenas R$14,90</p>
-                    </Label>
+                  <CardContent className="p-4">
+                      <p className="font-semibold text-sm sm:text-base">🙏 Guia de Orações Diárias para Crianças</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Conteúdo digital exclusivo, por apenas R$14,90</p>
                   </CardContent>
                 </Card>
               </div>
@@ -347,16 +340,16 @@ export default function Home() {
               <div className="text-left max-w-sm mx-auto space-y-4 pt-6">
                   <h3 className="text-lg font-semibold text-center mb-4">Perguntas Frequentes</h3>
                   <div className="border-t border-border/50 pt-2">
-                    <p className="font-semibold">O acesso é vitalício?</p>
-                    <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim.</p>
+                    <p className="font-semibold text-sm">O acesso é vitalício?</p>
+                    <p className="flex items-center gap-2 text-muted-foreground text-sm"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim.</p>
                   </div>
                   <div className="border-t border-border/50 pt-2">
-                    <p className="font-semibold">Funciona na TV?</p>
-                    <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim, é super fácil!</p>
+                    <p className="font-semibold text-sm">Funciona na TV?</p>
+                    <p className="flex items-center gap-2 text-muted-foreground text-sm"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim, é super fácil!</p>
                   </div>
                   <div className="border-t border-border/50 pt-2">
-                    <p className="font-semibold">É seguro para todas as idades?</p>
-                    <p className="flex items-center gap-2 text-muted-foreground"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> 100%!</p>
+                    <p className="font-semibold text-sm">É seguro para todas as idades?</p>
+                    <p className="flex items-center gap-2 text-muted-foreground text-sm"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> 100%!</p>
                   </div>
               </div>
             </div>
