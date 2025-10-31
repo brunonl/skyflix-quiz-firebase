@@ -1,22 +1,41 @@
-import type {Metadata} from 'next';
+'use client';
+
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import StarsBackground from '@/components/stars-background';
 import Script from 'next/script';
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google';
+import MusicPlayer from '@/components/music-player';
+import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'Skyflix Emotion Quiz',
-  description: 'Um funil interativo para descobrir a plataforma Skyflix.',
+type MusicContextType = {
+  isMuted: boolean;
+  toggleMute: () => void;
 };
+
+const MusicContext = createContext<MusicContextType | undefined>(undefined);
+
+export function useMusic() {
+  const context = useContext(MusicContext);
+  if (!context) {
+    throw new Error('useMusic must be used within a MusicProvider');
+  }
+  return context;
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
+  const [isMuted, setIsMuted] = useState(false);
+
+  const toggleMute = useCallback(() => {
+    setIsMuted(prev => !prev);
+  }, []);
+
   return (
     <html lang="pt-BR" className="dark">
       <head>
@@ -46,9 +65,11 @@ export default function RootLayout({
           </div>
         </div>
         <div className="fixed top-0 left-0 right-0 h-48 bg-gradient-to-b from-background to-transparent z-0" />
-        {children}
+        <MusicContext.Provider value={{ isMuted, toggleMute }}>
+          {children}
+          <MusicPlayer isMuted={isMuted} onToggleMute={toggleMute} />
+        </MusicContext.Provider>
         <Toaster />
-        <audio id="background-music" src="/music/background.mp3" loop></audio>
       </body>
     </html>
   );

@@ -1,7 +1,6 @@
-
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -13,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
+import { useMusic } from '@/app/layout'; // Import useMusic hook
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
 type FormValues = { name: string; email: string; phone: string; };
@@ -25,12 +25,15 @@ const quizQuestions = [
 ];
 
 const sliderImages = [
-  "https://skyflix-quiz.vercel.app/images/historys/h1.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h2.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h3.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h4.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h5.png",
-  "https://skyflix-quiz.vercel.app/images/historys/h6.png",
+  "/images/h1.png",
+  "/images/h3.png",
+  "/images/h4.png",
+  "/images/h5.png",
+  "/images/h6.png",
+  "/images/h7.png",
+  "/images/h9.png",
+  "/images/h10.png",
+  "/images/h11.png",
 ];
 
 export default function Home() {
@@ -38,41 +41,13 @@ export default function Home() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [progress, setProgress] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const { isMuted, toggleMute } = useMusic(); // Use the context hook
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
 
-  const playAudio = useCallback(() => {
-    if (audioRef.current && audioRef.current.paused) {
-      audioRef.current.play().catch(() => {
-        // Autoplay was prevented. User needs to interact first.
-      });
-    }
-  }, []);
-  
-  useEffect(() => {
-    const audioEl = document.getElementById("background-music") as HTMLAudioElement;
-    if (audioEl) {
-      audioRef.current = audioEl;
-      // Autoplay with sound is often blocked. We'll attempt to play it, 
-      // and rely on a user click if it fails.
-      playAudio();
-      const playOnClick = () => playAudio();
-      document.addEventListener('click', playOnClick, { once: true });
-      
-      return () => {
-        document.removeEventListener('click', playOnClick);
-      };
-    }
-  }, [playAudio]);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
+  // Removed all audio related state and effects, now managed by MusicContext and MusicPlayer
 
   useEffect(() => {
     const totalSteps = quizQuestions.length + 4; // intro, quizzes, reveal, social, loading, offer
@@ -149,27 +124,21 @@ export default function Home() {
     window.location.href = "https://pay.kiwify.com.br/0nFE1EN";
   };
 
-  const toggleMute = () => {
-    setIsMuted(prev => {
-        if(audioRef.current) {
-            audioRef.current.muted = !prev;
-        }
-        return !prev;
-    });
-  };
-
   const renderContent = () => {
     switch (stage) {
       case 'intro':
         return (
           <div className="text-center animate-in fade-in duration-500 w-full flex flex-col items-center">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-white">
-              O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
+              O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.<br />Enquanto você trabalha, a internet educa.
             </h1>
-            <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-              Enquanto você trabalha, a internet educa. Mas será que é esse o tipo de educação que você quer para o seu filho?
+            <p className="text-lg md:text-xl text-white/80 max-w-5xl mx-auto">
+              O <strong>SKYFLIX</strong> foi criado pra mudar isso, uma plataforma cristã segura, com <strong>conteúdos cuidadosamente selecionados de forma criteriosa</strong>, que ensinam sobre Deus de um jeito leve, divertido e livre de influências ruins.
             </p>
-            <div className="w-full overflow-hidden relative mb-8">
+            <p className="mb-2 font-semibold text-white mt-8">💙 Quero proteger o meu filho agora!</p>
+            <Button size="lg" className="w-full md:w-auto mb-10" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
+
+            <div className="w-full overflow-hidden relative mb-[60px]">
               <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10" />
               <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10" />
               <div className="flex w-max scrolling-wrapper">
@@ -180,8 +149,6 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <p className="mb-2 font-semibold text-white">Quero proteger o meu filho agora!</p>
-            <Button size="lg" className="w-full md:w-auto" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
           </div>
         );
 
@@ -363,7 +330,3 @@ export default function Home() {
     </>
   );
 }
-
-    
-
-    
