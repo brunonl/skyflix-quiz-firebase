@@ -2,10 +2,10 @@
 
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import StarsBackground from '@/components/stars-background';
+import StarsBackground from '@/features/layout/stars-background';
 import Script from 'next/script';
 import { Inter } from 'next/font/google';
-import MusicPlayer from '@/components/music-player';
+import MusicPlayer from '@/features/music-player/music-player';
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });

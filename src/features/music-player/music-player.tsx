@@ -1,8 +1,6 @@
-'use client';
-
 import { useEffect, useRef } from 'react';
 
-interface MusicPlayerProps {
+export interface MusicPlayerProps {
   isMuted: boolean;
   onToggleMute: () => void;
 }
@@ -28,4 +26,4 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ isMuted, onToggleMute }) => {
   );
 };
 
-  export default MusicPlayer;
+export default MusicPlayer;
