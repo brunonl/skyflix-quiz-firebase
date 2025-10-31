@@ -16,7 +16,6 @@ import { trackEvent } from "@/lib/tracking";
 import { Loader2, Volume2, VolumeX, Play, Check, Lock, ChevronLeft, PartyPopper } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { useMusic } from "@/app/layout";
@@ -238,8 +237,8 @@ export default function Home() {
                   variant="outline"
                   size="lg" 
                   className={cn(
-                    "justify-start text-left h-auto py-4 text-sm sm:text-base w-full bg-card/50 border-border text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground whitespace-normal",
-                    selectedAnswer === answer ? "bg-primary/20 text-foreground border-primary" : "bg-card/50 border-border text-foreground/80"
+                    "justify-start text-left h-auto py-4 text-sm sm:text-base w-full bg-card/50 border-primary/30 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground whitespace-normal",
+                    selectedAnswer === answer ? "bg-primary/20 text-foreground border-primary" : ""
                   )} 
                   onClick={() => handleAnswer(answer)}
                 >
@@ -300,41 +299,40 @@ export default function Home() {
 
       case 'offer':
         return (
-          <div className="text-center animate-in zoom-in-95 duration-500 space-y-6 max-w-3xl mx-auto pb-8 sm:pb-0">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2">🎉 Parabéns! Seu cupom de desconto foi ativado com sucesso!</h2>
+          <div className="text-center animate-in zoom-in-95 duration-500 space-y-6 max-w-3xl mx-auto pb-8 sm:pb-16">
+            <h2 className="text-2xl sm:text-4xl font-bold text-primary mb-2">🎉 Parabéns! Seu cupom foi ativado!</h2>
             <p className="text-base sm:text-lg text-foreground/80 mb-6">
-              Você acaba de garantir 50% de desconto vitalício no acesso à ✨ SKYFLIX – A Plataforma Cristã Infantil.
-              <br/>
-              Agora o seu filho pode aprender sobre Deus brincando, em um ambiente seguro e livre de más influências — com um investimento único e vitalício.
+              Agora seu filho pode aprender sobre Deus brincando, em um ambiente seguro e livre de más influências — com um investimento único e vitalício.
             </p>
             
-            <Card className="bg-card/70 border-2 border-primary shadow-[0_0_20px] shadow-primary/50 max-w-md mx-auto text-center py-4">
-                <CardContent className="p-2">
-                    <p className="text-md sm:text-lg text-foreground/80">🕊️ De <span className="line-through">R$99,00</span> → por apenas</p>
-                    <p className="text-3xl sm:text-4xl font-bold text-white my-1">R$47,90</p>
-                    <p className="text-xs sm:text-sm text-foreground/70">💙 (Desconto vitalício aplicado automaticamente pelo seu cupom)</p>
+            <Card className="bg-card/70 border border-primary/50 max-w-md mx-auto text-center py-4">
+                <CardContent className="p-2 sm:p-4">
+                    <p className="text-lg sm:text-xl font-bold text-secondary">✨ 50% DE DESCONTO VITALÍCIO ✨</p>
+                    <p className="text-md sm:text-lg text-foreground/80 mt-2">De <span className="line-through">R$99,00</span> por apenas:</p>
+                    <p className="text-4xl sm:text-5xl font-bold text-white my-1">R$47,90</p>
+                    <p className="text-xs sm:text-sm text-foreground/70">💙 (Pagamento único, acesso para sempre)</p>
                 </CardContent>
             </Card>
 
-            <div className="space-y-4 pt-4 text-sm sm:text-base">
-              <div className="bg-card/50 border border-border/50 p-4 rounded-lg text-left text-sm sm:text-base">
-                  <p className="font-semibold">🔥 Atividades e Jogos Bíblicos Extras</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">+100 novos desafios interativos por apenas R$14,90</p>
+            <div className="space-y-3 pt-4 text-sm sm:text-base">
+              <div className="bg-card/50 border border-border/50 p-3 rounded-lg text-left">
+                  <p className="font-semibold text-base sm:text-lg">🔥 Atividades e Jogos Bíblicos Extras</p>
+                  <p className="text-sm sm:text-base text-muted-foreground">+100 novos desafios interativos por apenas R$14,90</p>
               </div>
-              <div className="bg-card/50 border border-border/50 p-4 rounded-lg text-left text-sm sm:text-base">
-                  <p className="font-semibold">🙏 Guia de Orações Diárias para Crianças</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">Conteúdo digital exclusivo, por apenas R$14,90</p>
+              <div className="bg-card/50 border border-border/50 p-3 rounded-lg text-left">
+                  <p className="font-semibold text-base sm:text-lg">🙏 Guia de Orações Diárias para Crianças</p>
+                  <p className="text-sm sm:text-base text-muted-foreground">Conteúdo digital exclusivo, por apenas R$14,90</p>
               </div>
             </div>
 
             <Button size="lg" onClick={() => setIsModalOpen(true)} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg shadow-secondary/20 w-full md:w-auto animate-pulse mt-8">
-              Quero Meu Acesso
+              Quero garantir meu acesso agora!
             </Button>
 
              <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground"><Lock className="h-4 w-4"/> 7 dias de garantia ou seu dinheiro de volta.</p>
 
-            <div className="text-left max-w-sm mx-auto space-y-4 pt-6 pb-8">
-                <h3 className="text-lg font-semibold text-center mb-4">Perguntas Frequentes</h3>
+            <div className="text-left max-w-sm mx-auto space-y-4 pt-6 pb-8 md:grid md:grid-cols-3 md:max-w-3xl md:gap-x-8">
+                <h3 className="text-lg font-semibold text-center mb-4 md:col-span-3">Perguntas Frequentes</h3>
                 <div className="border-t border-border/50 pt-2">
                   <p className="font-semibold text-sm">O acesso é vitalício?</p>
                   <p className="flex items-center gap-2 text-muted-foreground text-sm"><Check className="text-secondary h-4 w-4 flex-shrink-0"/> Sim.</p>
