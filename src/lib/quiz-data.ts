@@ -1,24 +1,13 @@
+
 export type QuizQuestion = {
   id: number;
-  question: string;
+  text: string;
   answers: string[];
-  subtext?: string;
 };
 
 export const quizQuestions: QuizQuestion[] = [
-  {
-    id: 1,
-    question: "How often do you worry about the content your children are watching on mainstream platforms?",
-    answers: ["Frequently, it's a constant concern.", "Sometimes, I find questionable things.", "Rarely, I trust the platforms."],
-  },
-  {
-    id: 2,
-    question: "How important is it for you to find entertainment that reinforces your family's Christian values?",
-    answers: ["Extremely important, it's non-negotiable.", "Very important, I actively look for it.", "Somewhat important, but options are scarce."],
-  },
-  {
-    id: 3,
-    question: "Have you ever felt that modern cartoons and shows for kids promote values contrary to yours?",
-    answers: ["Yes, often and it's frustrating.", "Sometimes I notice subtle messages.", "No, I haven't noticed that."],
-  },
+  { id: 1, text: "Você acredita que o conteúdo que seu filho consome hoje pode influenciar o comportamento dele no futuro?", answers: ["A. Com certeza, e isso me preocupa.", "B. Sim, mas é difícil controlar tudo.", "C. Talvez, nunca pensei nisso.", "D. Não tenho certeza."] },
+  { id: 2, text: "Você já sentiu medo de deixar seu filho sozinho com o celular ou YouTube?", answers: ["A. Sim, o tempo todo.", "B. Sim, mas tento monitorar.", "C. Às vezes, depende do conteúdo."] },
+  { id: 3, text: "E se você pudesse oferecer um ambiente 100% seguro, com desenhos e histórias que ensinam valores cristãos, você usaria?", answers: ["A. Sim, com certeza!", "B. Sim, se fosse fácil de usar.", "C. Talvez, depende do conteúdo."] },
+  { id: 4, text: "Qual dessas opções mais representa o que você quer pro seu filho?", answers: ["A. Um ambiente seguro e sem influências ruins.", "B. Um conteúdo que ensine valores cristãos de forma divertida.", "C. Algo que estimule a criatividade e a fé ao mesmo tempo.", "D. Todas as opções acima."] },
 ];

@@ -239,7 +239,7 @@ export default function Home() {
                   variant="outline"
                   size="lg" 
                   className={cn(
-                    "justify-start text-left h-auto py-4 text-base w-full bg-transparent border-primary/40 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground",
+                    "justify-start text-left h-auto py-4 text-base w-full bg-transparent border-primary/40 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground whitespace-normal",
                     selectedAnswer === answer && "bg-primary/20 text-foreground border-primary" 
                   )} 
                   onClick={() => handleAnswer(answer)}
