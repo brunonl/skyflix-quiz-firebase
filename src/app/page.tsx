@@ -11,9 +11,9 @@ import { trackEvent } from "@/lib/tracking";
 import { Loader2, Play, Check, Lock, ChevronLeft, PartyPopper } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { ImageSlider } from "@/components/ui/image-slider";
-import { Quiz } from "@/components/ui/quiz";
-import { OfferModal } from "@/components/ui/offer-modal";
+import { ImageSlider } from "@/components/image-slider";
+import { Quiz } from "@/components/quiz";
+import { OfferModal } from "@/components/offer-modal";
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
 type FormValues = { name: string; email: string; phone: string; };

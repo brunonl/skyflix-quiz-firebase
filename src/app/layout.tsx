@@ -2,10 +2,10 @@
 
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import StarsBackground from '@/features/layout/stars-background';
+import StarsBackground from '@/components/stars-background';
 import Script from 'next/script';
 import { Inter } from 'next/font/google';
-import MusicPlayer from '@/features/music-player/music-player';
+// import MusicPlayer from '@/components/music-player'; // componente removido
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -67,7 +67,7 @@ export default function RootLayout({
         <div className="fixed top-0 left-0 right-0 h-48 bg-gradient-to-b from-background to-transparent z-0" />
         <MusicContext.Provider value={{ isMuted, toggleMute }}>
           {children}
-          <MusicPlayer isMuted={isMuted} onToggleMute={toggleMute} />
+          {/* MusicPlayer removido */}
         </MusicContext.Provider>
         <Toaster />
       </body>
