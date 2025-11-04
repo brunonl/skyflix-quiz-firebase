@@ -3,22 +3,17 @@
 import { useState, useEffect, useRef, MouseEvent, TouchEvent } from "react";
 
 // Função utilitária para tocar áudio
-function playSound(src: string) {
-  const audio = new window.Audio(src);
-  audio.volume = 0.7;
-  audio.play();
-}
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { trackEvent } from "@/lib/tracking";
-import { Loader2, Volume2, VolumeX, Play, Check, Lock, ChevronLeft, PartyPopper } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Loader2, Play, Check, Lock, ChevronLeft, PartyPopper } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { cn } from "@/lib/utils";
-import { useMusic } from "@/app/layout";
+import { ImageSlider } from "@/components/ui/image-slider";
+import { Quiz } from "@/components/ui/quiz";
+import { OfferModal } from "@/components/ui/offer-modal";
 
 type Stage = 'intro' | 'quiz' | 'reveal' | 'social' | 'loading' | 'offer';
 type FormValues = { name: string; email: string; phone: string; };
@@ -49,8 +44,8 @@ export default function Home() {
   const [progress, setProgress] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isMuted, toggleMute } = useMusic();
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+  const form = useForm<FormValues>();
+  const { register, handleSubmit, formState: { errors } } = form;
 
   const sliderRef = useRef<HTMLDivElement>(null);
   const [isDown, setIsDown] = useState(false);
@@ -80,9 +75,7 @@ export default function Home() {
       }, 3000);
       return () => clearTimeout(timer);
     }
-    if (stage === 'offer') {
-      playSound('/music/win.mp3'); // Som ao ganhar desconto
-    }
+    // Removido efeito sonoro ao ganhar desconto
   }, [stage]);
   
   useEffect(() => {
@@ -101,7 +94,7 @@ export default function Home() {
       question_text: quizQuestions[questionIndex].text,
       answer: answer,
     });
-    playSound('/music/step.mp3'); // Som ao avançar etapa
+  // Removido efeito sonoro ao avançar etapa
     setTimeout(() => {
       if (questionIndex < quizQuestions.length - 1) {
         setQuestionIndex(prev => prev + 1);
@@ -199,54 +192,13 @@ export default function Home() {
             <p className="mb-2 font-semibold text-white">💙 Quero proteger o meu filho agora!</p>
             <Button size="lg" className="w-full md:w-auto mb-10 animate-zoom-pulse bg-primary hover:bg-primary/90 text-primary-foreground" onClick={handleStartQuiz}>Conhecer a plataforma</Button>
 
-            <div className="w-full relative mb-[60px]">
-              <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-              <div 
-                ref={sliderRef}
-                onMouseDown={handleMouseDown}
-                onMouseLeave={handleMouseLeave}
-                onMouseUp={handleMouseUp}
-                onMouseMove={handleMouseMove}
-                onTouchStart={handleTouchStart}
-                onTouchEnd={handleTouchEnd}
-                onTouchMove={handleTouchMove}
-                className="w-full overflow-x-auto cursor-grab hide-scrollbar"
-              >
-                <div className="flex w-max scrolling-wrapper select-none">
-                  {[...sliderImages, ...sliderImages].map((src, i) => (
-                    <div key={i} className="w-[200px] h-[300px] flex-shrink-0 px-2">
-                      <Image src={src} alt={`Capa de conteúdo ${i+1}`} width={200} height={300} className="w-full h-full object-cover pointer-events-none" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <ImageSlider images={sliderImages} />
           </div>
         );
 
       case 'quiz':
-        const question = quizQuestions[questionIndex];
         return (
-          <div className="w-full animate-in fade-in duration-500">
-            <h2 className="text-lg sm:text-xl md:text-3xl font-semibold text-center mb-8">{question.text}</h2>
-            <div className="flex flex-col gap-4 mt-8">
-              {question.answers.map((answer, i) => (
-                <Button 
-                  key={i} 
-                  variant="outline"
-                  size="lg" 
-                  className={cn(
-                    "justify-start text-left h-auto py-4 text-sm sm:text-base w-full bg-card/50 border-primary/30 text-foreground/80 hover:bg-primary/20 hover:border-primary hover:text-foreground whitespace-normal",
-                    selectedAnswer === answer ? "bg-primary/20 text-foreground border-primary" : ""
-                  )} 
-                  onClick={() => handleAnswer(answer)}
-                >
-                  {answer}
-                </Button>
-              ))}
-            </div>
-          </div>
+          <Quiz question={quizQuestions[questionIndex]} selectedAnswer={selectedAnswer} onAnswer={handleAnswer} />
         );
       
       case 'reveal':
@@ -379,11 +331,7 @@ export default function Home() {
         }
       `}</style>
       <main className="flex min-h-screen w-full flex-col items-center pt-4 sm:pt-5 relative overflow-x-hidden">
-        <div className="absolute top-4 right-4 z-20">
-          <Button variant="ghost" size="icon" onClick={toggleMute}>
-            {isMuted ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-          </Button>
-        </div>
+        {/* Removido botão de mute */}
 
         <div className="w-full max-w-4xl flex flex-col items-center gap-2 sm:gap-4 px-4 sm:px-8 pb-12 sm:pb-0">
             <header className="w-full flex flex-col items-center gap-2 mb-4 sm:gap-4 sm:mb-8">
@@ -404,37 +352,7 @@ export default function Home() {
         </div>
       </main>
 
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="p-0 border-primary shadow-[0_0_30px_5px] shadow-primary/30 max-w-sm">
-          <div className="p-8 text-center space-y-4">
-            <DialogHeader className="space-y-2">
-              <DialogTitle className="text-2xl font-bold flex items-center justify-center gap-2">
-                <PartyPopper className="text-primary h-6 w-6" />
-                Último passo para garantir seu desconto!
-              </DialogTitle>
-              <p className="text-muted-foreground">Preencha os dados abaixo para acessar a plataforma:</p>
-            </DialogHeader>
-            <form onSubmit={handleSubmit(onModalSubmit)} className="space-y-4 text-left">
-              <div>
-                <Input id="name" {...register("name", { required: "Nome é obrigatório" })} placeholder="Seu nome completo"/>
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
-              </div>
-              <div>
-                <Input id="email" type="email" {...register("email", { required: "E-mail é obrigatório", pattern: { value: /^\S+@\S+$/i, message: "E-mail inválido" } })} placeholder="Seu melhor e-mail" />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-              </div>
-               <div>
-                <Input id="phone" type="tel" {...register("phone", { required: "Telefone é obrigatório" })} placeholder="Seu WhatsApp (com DDD)" />
-                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
-              </div>
-              <Button type="submit" className="w-full bg-black hover:bg-gray-800 text-white text-lg h-12">Quero meu acesso com 50% OFF</Button>
-            </form>
-            <p className="text-sm text-muted-foreground flex items-center justify-center gap-2 pt-2">
-              <Lock className="h-4 w-4"/> Seus dados estão seguros conosco
-            </p>
-          </div>
-        </DialogContent>
-      </Dialog>
+  <OfferModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} form={form} onSubmit={onModalSubmit} errors={errors} />
     </>
   );
 }
