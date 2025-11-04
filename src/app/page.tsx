@@ -31,15 +31,15 @@ const quizQuestions = [
 ];
 
 const sliderImages = [
-  "/images/h1.png",
-  "/images/h3.png",
-  "/images/h4.png",
-  "/images/h5.png",
-  "/images/h6.png",
-  "/images/h7.png",
-  "/images/h9.png",
-  "/images/h10.png",
-  "/images/h11.png",
+  "/images/capas/h1.png",
+  "/images/capas/h3.png",
+  "/images/capas/h4.png",
+  "/images/capas/h5.png",
+  "/images/capas/h6.png",
+  "/images/capas/h7.png",
+  "/images/capas/h9.png",
+  "/images/capas/h10.png",
+  "/images/capas/h11.png",
 ]; // Caminhos já estão corretos para pasta public
 
 export default function Home() {
