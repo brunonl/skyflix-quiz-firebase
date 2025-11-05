@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, MouseEvent, TouchEvent } from "react";
 
-// Função utilitária para tocar áudio
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -35,7 +34,7 @@ const sliderImages = [
   "/images/capas/h9.png",
   "/images/capas/h10.png",
   "/images/capas/h11.png",
-]; // Caminhos já estão corretos para pasta public
+];
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>('intro');
