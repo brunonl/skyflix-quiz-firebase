@@ -202,8 +202,6 @@ export default function Home() {
       
       case 'reveal':
         return (
-
-          <div className="w-full text-center space-y-4 animate-in fade-in duration-1000 max-w-md mx-auto">
             <div className="w-full text-center space-y-8 animate-in fade-in duration-1000">
               <h2 className="text-3xl md:text-4xl font-bold">Por isso criamos o SKYFLIX!</h2>
               <p className="text-lg text-primary font-semibold">Assista o vídeo abaixo!</p>
