@@ -202,16 +202,18 @@ export default function Home() {
       
       case 'reveal':
         return (
+
+          <div className="w-full text-center space-y-4 animate-in fade-in duration-1000 max-w-md mx-auto">
             <div className="w-full text-center space-y-8 animate-in fade-in duration-1000">
-              <h2 className="text-3xl md:text-4xl font-bold text-primary">🎬 Por isso criamos o SKYFLIX — A Plataforma Cristã Infantil.</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">Por isso criamos o SKYFLIX!</h2>
+              <p className="text-lg text-primary font-semibold">Assista o vídeo abaixo!</p>
               <div className="aspect-video bg-black overflow-hidden relative shadow-lg">
                   <Image src="https://picsum.photos/seed/vsl/800/450" layout="fill" objectFit="cover" alt="Video Sobre Skyflix"/>
                   <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
                     <Play className="w-20 h-20 text-white/80 cursor-pointer hover:text-white transition-colors"/>
                   </div>
               </div>
-              <p className="text-lg text-foreground/90 max-w-3xl mx-auto">Uma plataforma segura, com filmes, desenhos, músicas e atividades cristãs criadas para aproximar seu filho de Deus — e afastá-lo das más influências.</p>
-              <Button size="lg" onClick={() => setStage('social')}>👀 Ver exemplos do conteúdo da plataforma</Button>
+              <Button size="lg" onClick={() => setStage('social')}>Veja o que as famílias estão dizendo</Button>
             </div>
         );
 
