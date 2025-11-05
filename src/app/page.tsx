@@ -179,7 +179,7 @@ export default function Home() {
       case 'intro':
         return (
           <div className="text-center animate-in fade-in duration-500 w-full flex flex-col items-center">
-            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-tertiary">
+            <h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-primary">
               Enquanto você trabalha, a internet educa.
             </h1>
             <p className="text-base sm:text-lg md:text-3xl font-medium text-white mb-4 max-w-3xl mx-auto">
