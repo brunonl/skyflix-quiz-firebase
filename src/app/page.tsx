@@ -46,10 +46,6 @@ export default function Home() {
   const form = useForm<FormValues>();
   const { register, handleSubmit, formState: { errors } } = form;
 
-  const sliderRef = useRef<HTMLDivElement>(null);
-  const [isDown, setIsDown] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
 
   useEffect(() => {
     const totalSteps = quizQuestions.length + 4;
@@ -128,51 +124,6 @@ export default function Home() {
     window.location.href = "https://pay.kiwify.com.br/0nFE1EN";
   };
 
-  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
-    if (!sliderRef.current) return;
-    setIsDown(true);
-    sliderRef.current.classList.add('grabbing');
-    setStartX(e.pageX - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
-  };
-
-  const handleMouseLeave = () => {
-    if (!sliderRef.current) return;
-    setIsDown(false);
-    sliderRef.current.classList.remove('grabbing');
-  };
-
-  const handleMouseUp = () => {
-    if (!sliderRef.current) return;
-    setIsDown(false);
-    sliderRef.current.classList.remove('grabbing');
-  };
-
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!isDown || !sliderRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // O multiplicador acelera a rolagem
-    sliderRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    if (!sliderRef.current) return;
-    setIsDown(true);
-    setStartX(e.touches[0].pageX - sliderRef.current.offsetLeft);
-    setScrollLeft(sliderRef.current.scrollLeft);
-  };
-
-  const handleTouchEnd = () => {
-    setIsDown(false);
-  };
-
-  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-    if (!isDown || !sliderRef.current) return;
-    const x = e.touches[0].pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    sliderRef.current.scrollLeft = scrollLeft - walk;
-  };
 
   const renderContent = () => {
     switch (stage) {

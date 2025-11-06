@@ -9,31 +9,12 @@ import { createContext, useContext, useState, useCallback, ReactNode } from 'rea
 
 const inter = Inter({ subsets: ['latin'] });
 
-type MusicContextType = {
-  isMuted: boolean;
-  toggleMute: () => void;
-};
-
-const MusicContext = createContext<MusicContextType | undefined>(undefined);
-
-export function useMusic() {
-  const context = useContext(MusicContext);
-  if (!context) {
-    throw new Error('useMusic must be used within a MusicProvider');
-  }
-  return context;
-}
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
-  const [isMuted, setIsMuted] = useState(false);
-
-  const toggleMute = useCallback(() => {
-    setIsMuted(prev => !prev);
-  }, []);
 
   return (
     <html lang="pt-BR" className="dark">
@@ -64,10 +45,8 @@ export default function RootLayout({
           </div>
         </div>
         <div className="fixed top-0 left-0 right-0 h-48 bg-gradient-to-b from-background to-transparent z-0" />
-        <MusicContext.Provider value={{ isMuted, toggleMute }}>
-          {children}
-          {/* MusicPlayer removido */}
-        </MusicContext.Provider>
+        {/* Contexto de música removido, children renderizado diretamente */}
+        {children}
         <Toaster />
       </body>
     </html>
