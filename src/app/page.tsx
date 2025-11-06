@@ -1,15 +1,14 @@
 "use client";
 
-import { useState, useEffect, useRef, MouseEvent, TouchEvent } from "react";
+import { useState, useEffect} from "react";
 
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 import { trackEvent } from "@/lib/tracking";
-import { Loader2, Play, Check, Lock, ChevronLeft, PartyPopper } from "lucide-react";
+import { Loader2, Play, Check, Lock, ChevronLeft } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { cn } from "@/lib/utils";
 import { ImageSlider } from "@/components/image-slider";
 import { Quiz } from "@/components/quiz";
 import { OfferModal } from "@/components/offer-modal";
@@ -70,7 +69,6 @@ export default function Home() {
       }, 3000);
       return () => clearTimeout(timer);
     }
-    // Removido efeito sonoro ao ganhar desconto
   }, [stage]);
   
   useEffect(() => {
@@ -89,7 +87,7 @@ export default function Home() {
       question_text: quizQuestions[questionIndex].text,
       answer: answer,
     });
-  // Removido efeito sonoro ao avançar etapa
+
     setTimeout(() => {
       if (questionIndex < quizQuestions.length - 1) {
         setQuestionIndex(prev => prev + 1);
@@ -281,8 +279,6 @@ export default function Home() {
         }
       `}</style>
       <main className="flex min-h-screen w-full flex-col items-center pt-4 sm:pt-5 relative overflow-x-hidden">
-        {/* Removido botão de mute */}
-
         <div className="w-full max-w-4xl flex flex-col items-center gap-2 sm:gap-4 px-4 sm:px-8 pb-12 sm:pb-0">
             <header className="w-full flex flex-col items-center gap-2 mb-4 sm:gap-4 sm:mb-8">
                 <div className="relative w-full flex items-center justify-center">
