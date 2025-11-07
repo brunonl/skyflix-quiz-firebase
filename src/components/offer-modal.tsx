@@ -32,7 +32,7 @@ export const OfferModal: React.FC<OfferModalProps> = ({ isOpen, onOpenChange, fo
     <DialogContent className="sm:max-w-md p-0">
       <div className="p-8 space-y-6">
         <DialogHeader className="text-center space-y-2">
-          <DialogTitle className="text-3xl font-bold text-balance text-primary">
+          <DialogTitle className="text-2xl font-bold text-balance">
             Último passo para garantir seu desconto!
           </DialogTitle>
           <p className="text-muted-foreground text-balance">
@@ -68,8 +68,8 @@ export const OfferModal: React.FC<OfferModalProps> = ({ isOpen, onOpenChange, fo
           <div className="space-y-2">
              <label htmlFor="phone" className="text-sm font-medium leading-none">WhatsApp</label>
              <div className="relative">
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none gap-2">
-                    <span>🇧🇷</span>
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <span className="mr-2">🇧🇷</span>
                     <span className="text-sm text-muted-foreground">+55</span>
                 </div>
                 <Controller
@@ -89,7 +89,7 @@ export const OfferModal: React.FC<OfferModalProps> = ({ isOpen, onOpenChange, fo
                                 handlePhoneChange(e);
                                 field.onChange(e.target.value);
                             }}
-                            className="pl-[15]"
+                            className="pl-[4.2rem]"
                         />
                     )}
                 />
