@@ -216,7 +216,7 @@ export default function Home() {
 			case 'loading':
 				return (
 					<div className="flex flex-col items-center justify-center animate-in fade-in duration-500">
-						<Loader2 className="h-16 w-16 animate-spin text-primary" />
+						<Loader2 className="h-16 w-16 animate-spin text-primary mt-5" />
 						<p className="mt-4 text-lg text-center text-foreground/80">⏳ Buscando um cupom de desconto especial pra você…</p>
 					</div>
 				);
