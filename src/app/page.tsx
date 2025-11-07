@@ -66,7 +66,7 @@ export default function Home() {
 		if (stage === 'loading') {
 			const timer = setTimeout(() => {
 				setStage('offer');
-			}, 3000);
+			}, 5000);
 			return () => clearTimeout(timer);
 		}
 	}, [stage]);
@@ -158,10 +158,10 @@ export default function Home() {
 			case 'intro':
 				return (
 					<div className="text-center animate-in fade-in duration-500 w-full flex flex-col items-center">
-						<h1 className="text-xl sm:text-2xl md:text-4xl font-bold tracking-tight mb-4 max-w-3xl mx-auto text-primary">
+						<h1 className="text-2xl sm:text-2xl md:text-4xl font-bold mb-4 max-w-3xl mx-auto text-primary">
 							Enquanto você trabalha, a internet educa.
 						</h1>
-						<p className="text-base sm:text-lg md:text-3xl font-medium text-white mb-4 max-w-3xl mx-auto">
+						<p className="text-base sm:text-lg md:text-3xl font-medium mb-4 max-w-3xl mx-auto text-white">
 							O que seu filho está assistindo hoje...<br />Pode moldar quem ele será amanhã.
 						</p>
 						<p className="text-sm sm:text-base md:text-lg text-white/80 mb-6 max-w-3xl mx-auto">
@@ -196,15 +196,9 @@ export default function Home() {
 
 			case 'social':
 				return (
-					<div className="w-full text-center space-y-12 animate-in fade-in duration-1000">
-						<h2 className="text-3xl font-bold">O que as famílias estão amando no SKYFLIX:</h2>
-						<ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-left max-w-3xl mx-auto">
-							{["Filmes e desenhos 3D com personagens da Bíblia", "Historinhas em vídeo e áudio para dormir", "Jogos educativos e atividades bíblicas", "Material para colorir e aprender brincando", "Conteúdo atualizado semanalmente"].map(item => (
-								<li key={item} className="flex items-center gap-3 text-base">
-									<Check className="h-6 w-6 text-secondary flex-shrink-0" /> {item}
-								</li>
-							))}
-						</ul>
+					<div className="w-full text-center space-y-5 animate-in fade-in duration-1000">
+						<h2 className="text-2xl font-bold">O que as famílias estão dizendo sobre o SKYFLIX:</h2>
+			
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							{[1, 2].map(i => (
 								<div key={i} className="aspect-video bg-black overflow-hidden relative shadow-lg">
@@ -215,7 +209,7 @@ export default function Home() {
 								</div>
 							))}
 						</div>
-						<Button size="lg" onClick={() => setStage('loading')}>💙 Quero garantir o acesso com desconto especial</Button>
+						<Button size="lg" onClick={() => setStage('loading')} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg shadow-secondary/20 w-full md:w-auto animate-pulse">Quero garantir meu acesso com desconto!</Button>
 					</div>
 				);
 
@@ -232,7 +226,7 @@ export default function Home() {
 					<div className="text-center animate-in zoom-in-95 duration-500 space-y-6 max-w-3xl mx-auto pb-8 sm:pb-16">
 						<h2 className="text-2xl sm:text-4xl font-bold text-primary mb-2">🎉 Parabéns! Seu cupom foi ativado!</h2>
 						<p className="text-base sm:text-lg text-foreground/80 mb-6">
-							Agora seu filho pode aprender sobre Deus brincando, em um ambiente seguro e livre de más influências — com um investimento único e vitalício.
+							Agora seu filho pode aprender sobre Deus brincando, em um ambiente seguro e livre de más influências com um investimento único e vitalício.
 						</p>
 
 						<Card className="bg-card/70 border border-primary/50 max-w-md mx-auto text-center py-4">
@@ -256,7 +250,7 @@ export default function Home() {
 						</div>
 
 						<Button size="lg" onClick={() => setIsModalOpen(true)} className="bg-secondary hover:bg-secondary/90 text-secondary-foreground shadow-lg shadow-secondary/20 w-full md:w-auto animate-pulse mt-8">
-							Quero garantir meu acesso agora!
+							Comprar agora com desconto!
 						</Button>
 
 						<p className="flex items-center justify-center gap-2 text-sm text-muted-foreground"><Lock className="h-4 w-4" /> 7 dias de garantia ou seu dinheiro de volta.</p>
@@ -317,7 +311,7 @@ export default function Home() {
 									<ChevronLeft className="h-6 w-6 text-primary/70" />
 								</Button>
 							)}
-							<Image src="/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={200} height={50} priority className="mb-2 sm:mb-4" />
+							<Image src="/images/logo/skyflix-logo.png" alt="Skyflix Logo" width={180} height={36} priority className="mb-2 sm:mb-4 lg:w-[200px] lg:h-auto" />
 						</div>
 						<Progress value={progress} className="w-full h-2 max-w-md" />
 					</header>
