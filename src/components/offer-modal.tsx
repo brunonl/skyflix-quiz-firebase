@@ -29,10 +29,10 @@ const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
 export const OfferModal: React.FC<OfferModalProps> = ({ isOpen, onOpenChange, form, onSubmit, errors }) => (
   <Dialog open={isOpen} onOpenChange={onOpenChange}>
-    <DialogContent className="sm:max-w-md p-0">
-      <div className="p-8 space-y-6">
+    <DialogContent className="sm:max-w-md p-0 flex items-start justify-center min-h-screen sm:min-h-0">
+      <div className="p-8 space-y-6 w-full">
         <DialogHeader className="text-center space-y-2">
-          <DialogTitle className="text-2xl font-bold text-balance">
+          <DialogTitle className="text-2xl font-bold text-balance text-secondary">
             Último passo para garantir seu desconto!
           </DialogTitle>
           <p className="text-muted-foreground text-balance">

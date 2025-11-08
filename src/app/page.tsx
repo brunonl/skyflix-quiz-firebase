@@ -197,9 +197,10 @@ export default function Home() {
 			case 'social':
 				return (
 					<div className="w-full text-center space-y-5 animate-in fade-in duration-1000">
-						<h2 className="text-2xl font-bold">O que as famílias estão dizendo sobre o SKYFLIX:</h2>
+						<h2 className="text-2xl font-bold">O que as famílias estão dizendo sobre o SKYFLIX</h2>
+						<p className="text-lg text-primary font-semibold">Assista os depoimentos abaixo!</p>
 			
-						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 							{[1, 2].map(i => (
 								<div key={i} className="aspect-video bg-black overflow-hidden relative shadow-lg">
 									<Image src={`https://picsum.photos/seed/depoimento${i}/400/225`} layout="fill" objectFit="cover" alt={`Depoimento de família ${i}`} />
@@ -303,7 +304,7 @@ export default function Home() {
         }
       `}</style>
 			<main className="flex min-h-screen w-full flex-col items-center pt-4 sm:pt-5 relative overflow-x-hidden">
-				<div className="w-full max-w-4xl flex flex-col items-center gap-2 sm:gap-4 px-4 sm:px-8 pb-12 sm:pb-0">
+				<div className="w-full max-w-4xl flex flex-col items-center gap-2 sm:gap-4 px-4 sm:px-8 pb-12">
 					<header className="w-full flex flex-col items-center gap-2 mb-4 sm:gap-4 sm:mb-8">
 						<div className="relative w-full flex items-center justify-center">
 							{showBackButton && (
