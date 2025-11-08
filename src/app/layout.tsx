@@ -19,6 +19,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark">
       <head>
+        <title>SkyFlix - Conteúdo Cristão para Crianças</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Script id="gtm-script" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -29,7 +31,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased bg-background text-foreground min-h-screen`}>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-WPKRCNSQ"
