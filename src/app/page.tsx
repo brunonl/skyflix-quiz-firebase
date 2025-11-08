@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import Image from "next/image";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
@@ -199,7 +200,7 @@ export default function Home() {
 					<div className="w-full text-center space-y-5 animate-in fade-in duration-1000">
 						<h2 className="text-2xl font-bold">O que as famílias estão dizendo sobre o SKYFLIX</h2>
 						<p className="text-lg text-primary font-semibold">Assista os depoimentos abaixo!</p>
-			
+
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-5">
 							{[1, 2].map(i => (
 								<div key={i} className="aspect-video bg-black overflow-hidden relative shadow-lg">
@@ -241,12 +242,12 @@ export default function Home() {
 
 						<div className="space-y-3 pt-4 text-sm sm:text-base">
 							<div className="bg-card/50 border border-border/50 p-3 rounded-lg text-left">
-								<p className="font-semibold text-base sm:text-lg">🔥 Atividades e Jogos Bíblicos Extras</p>
-								<p className="text-sm sm:text-base text-muted-foreground">+100 novos desafios interativos por apenas R$14,90</p>
+								<p className="font-semibold text-base sm:text-lg">🎨 Super Kit de Desenhos para Colorir</p>
+								<p className="text-sm sm:text-base text-muted-foreground">+200 desenhos para colorir por apenas R$14,90</p>
 							</div>
 							<div className="bg-card/50 border border-border/50 p-3 rounded-lg text-left">
-								<p className="font-semibold text-base sm:text-lg">🙏 Guia de Orações Diárias para Crianças</p>
-								<p className="text-sm sm:text-base text-muted-foreground">Conteúdo digital exclusivo, por apenas R$14,90</p>
+								<p className="font-semibold text-base sm:text-lg">🏆 Super Kit de Jogos e Atividades Bíblicas</p>
+								<p className="text-sm sm:text-base text-muted-foreground">Vários jogos e atividades por apenas R$14,90</p>
 							</div>
 						</div>
 
@@ -254,22 +255,22 @@ export default function Home() {
 							Comprar agora com desconto!
 						</Button>
 
-						<p className="flex items-center justify-center gap-2 text-sm text-muted-foreground"><Lock className="h-4 w-4" /> 7 dias de garantia ou seu dinheiro de volta.</p>
-
-						<div className="text-left max-w-sm mx-auto space-y-4 pt-6 pb-8 md:grid md:grid-cols-3 md:max-w-3xl md:gap-x-8">
-							<h3 className="text-lg font-semibold text-center mb-4 md:col-span-3">Perguntas Frequentes</h3>
-							<div className="border-t border-border/50 pt-2">
-								<p className="font-semibold text-sm">O acesso é vitalício?</p>
-								<p className="flex items-center gap-2 text-muted-foreground text-sm"><Check className="text-secondary h-4 w-4 flex-shrink-0" /> Sim.</p>
-							</div>
-							<div className="border-t border-border/50 pt-2">
-								<p className="font-semibold text-sm">Funciona na TV?</p>
-								<p className="flex items-center gap-2 text-muted-foreground text-sm"><Check className="text-secondary h-4 w-4 flex-shrink-0" /> Sim, é super fácil!</p>
-							</div>
-							<div className="border-t border-border/50 pt-2">
-								<p className="font-semibold text-sm">É seguro para todas as idades?</p>
-								<p className="flex items-center gap-2 text-muted-foreground text-sm"><Check className="text-secondary h-4 w-4 flex-shrink-0" /> 100%!</p>
-							</div>
+						<div className="w-full pt-8">
+							<h3 className="text-lg font-semibold mb-6">Perguntas Frequentes</h3>
+							<Accordion type="multiple" defaultValue={["faq1"]} className="w-full flex flex-col gap-4">
+								<AccordionItem value="faq1" className="border bg-card/60">
+									<AccordionTrigger className="text-base font-semibold px-4 py-4 text-left">Onde posso assistir?</AccordionTrigger>
+									<AccordionContent className="text-muted-foreground text-left px-4 pb-4">Assista onde quiser, quando quiser. Faça login com sua conta para começar a assistir no computador ou em qualquer aparelho como Smart TVs, smartphones, tablets, aparelhos de streaming e videogames. Você também pode baixar os seus episódios favoritos com iOS, Android ou Windows 10. Use downloads para levar a Skyflix para onde quiser sem precisar de conexão com a Internet.</AccordionContent>
+								</AccordionItem>
+								<AccordionItem value="faq2" className="border bg-card/60">
+									<AccordionTrigger className="text-base font-semibold px-4 py-4 text-left">Como será disponibilizado o meu acesso à plataforma?</AccordionTrigger>
+									<AccordionContent className="text-muted-foreground text-left px-4 pb-4">Após a confirmação do pagamento, o acesso à plataforma será imediatamente liberado. Você receberá um e-mail contendo o link de acesso para baixar o aplicativo, além de seu login e senha exclusivos.</AccordionContent>
+								</AccordionItem>
+								<AccordionItem value="faq3" className="border bg-card/60">
+									<AccordionTrigger className="text-base font-semibold px-4 py-4 text-left">Para quais idades o skyflix é voltado?</AccordionTrigger>
+									<AccordionContent className="text-muted-foreground px-4 text-left pb-4">Nosso conteúdo é voltado para crianças de 1 a 10 anos</AccordionContent>
+								</AccordionItem>
+							</Accordion>
 						</div>
 					</div>
 				);
