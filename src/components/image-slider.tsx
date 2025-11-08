@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, TouchEvent } from "react";
 
 interface ImageSliderProps {
   images: string[];
@@ -11,27 +11,54 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleDragStart = (position: number) => {
     if (!sliderRef.current) return;
     setIsDragging(true);
-    setStartX(e.pageX - sliderRef.current.offsetLeft);
+    setStartX(position - sliderRef.current.offsetLeft);
     setScrollLeft(sliderRef.current.scrollLeft);
   };
 
-  const handleMouseUp = () => {
+  const handleDragEnd = () => {
     setIsDragging(false);
   };
 
-  const handleMouseLeave = () => {
-    setIsDragging(false);
+  const handleDragMove = (position: number) => {
+    if (!isDragging || !sliderRef.current) return;
+    const x = position - sliderRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    sliderRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  // Mouse Events
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    handleDragStart(e.pageX);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !sliderRef.current) return;
     e.preventDefault();
-    const x = e.pageX - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
-    sliderRef.current.scrollLeft = scrollLeft - walk;
+    handleDragMove(e.pageX);
+  };
+
+  const handleMouseUp = () => {
+    handleDragEnd();
+  };
+
+  const handleMouseLeave = () => {
+    handleDragEnd();
+  };
+
+  // Touch Events
+  const handleTouchStart = (e: TouchEvent) => {
+    handleDragStart(e.touches[0].pageX);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    handleDragMove(e.touches[0].pageX);
+  };
+
+  const handleTouchEnd = () => {
+    handleDragEnd();
   };
 
   return (
@@ -40,11 +67,14 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
       <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
       <div 
         ref={sliderRef}
-        className="slider-container w-full overflow-hidden cursor-grab"
+        className="w-full overflow-x-hidden cursor-grab touch-pan-x"
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}
+        onTouchStart={(e) => handleTouchStart(e as unknown as TouchEvent)}
+        onTouchMove={(e) => handleTouchMove(e as unknown as TouchEvent)}
+        onTouchEnd={handleTouchEnd}
       >
         <div className="slider-track flex gap-4">
           {[...images, ...images, ...images].map((src, i) => (
