@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useRef, useState, TouchEvent } from "react";
+import React, { useRef, useState, TouchEvent, useEffect } from "react";
 
 interface ImageSliderProps {
   images: string[];
@@ -25,7 +25,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const handleDragMove = (position: number) => {
     if (!isDragging || !sliderRef.current) return;
     const x = position - sliderRef.current.offsetLeft;
-    const walk = (x - startX) * 2;
+    const walk = (x - startX) * 0.8; // Reduzido o multiplicador de 2 para 0.75
     sliderRef.current.scrollLeft = scrollLeft - walk;
   };
 
@@ -60,6 +60,25 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const handleTouchEnd = () => {
     handleDragEnd();
   };
+
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const handleScroll = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = slider;
+      const scrollEnd = scrollWidth / 3;
+
+      if (scrollLeft >= scrollEnd) {
+        slider.scrollLeft = scrollLeft - scrollEnd;
+      } else if (scrollLeft <= 0) {
+        slider.scrollLeft = scrollEnd;
+      }
+    };
+
+    slider.addEventListener('scroll', handleScroll);
+    return () => slider.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="w-full relative overflow-hidden">
